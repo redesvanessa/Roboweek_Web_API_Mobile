@@ -1,341 +1,513 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 3.2.1 (Python 3.8.3rc1 on win32)" generated="20200711 16:11:54.285" rpa="false">
-<suite id="s1" name="Produtos" source="C:\roboweek\ninjachef\tests\produtos.robot">
-<test id="s1-t1" name="Novo prato">
-<kw name="Login Session" library="helpers" type="setup">
-<arguments>
-<arg>vanessaredes@yahoo.com.br</arg>
-</arguments>
-<kw name="Open Session" library="base">
+<robot generator="Robot 3.2.1 (Python 3.8.3rc1 on win32)" generated="20200722 21:45:47.962" rpa="false">
+<suite id="s1" name="Receber-Pedidos" source="c:\roboweek\ninjachef\web\tests\receber-pedidos.robot">
+<test id="s1-t1" name="Receber novo pedido">
+<kw name="Open Session" library="base" type="setup">
 <kw name="Open Browser" library="SeleniumLibrary">
 <doc>Opens a new browser instance to the optional ``url``.</doc>
 <arguments>
 <arg>about:blank</arg>
 <arg>chrome</arg>
 </arguments>
-<msg timestamp="20200711 16:11:54.442" level="INFO">Opening browser 'chrome' to base url 'about:blank'.</msg>
-<status status="PASS" starttime="20200711 16:11:54.442" endtime="20200711 16:11:57.577"></status>
+<msg timestamp="20200722 21:45:48.164" level="INFO">Opening browser 'chrome' to base url 'about:blank'.</msg>
+<status status="PASS" starttime="20200722 21:45:48.164" endtime="20200722 21:45:51.404"></status>
 </kw>
-<status status="PASS" starttime="20200711 16:11:54.442" endtime="20200711 16:11:57.577"></status>
+<status status="PASS" starttime="20200722 21:45:48.164" endtime="20200722 21:45:51.404"></status>
+</kw>
+<kw name="Dado que &quot;eduguedes@gmail.com&quot; é a minha conta de cozinheiro" library="kws">
+<kw name="Set Test Variable" library="BuiltIn">
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<arguments>
+<arg>${email_cozinheiro}</arg>
+</arguments>
+<msg timestamp="20200722 21:45:51.405" level="INFO">${email_cozinheiro} = eduguedes@gmail.com</msg>
+<status status="PASS" starttime="20200722 21:45:51.405" endtime="20200722 21:45:51.405"></status>
+</kw>
+<kw name="Get API token" library="helpers">
+<arguments>
+<arg>${email_cozinheiro}</arg>
+</arguments>
+<assign>
+<var>${token_cozinheiro}</var>
+</assign>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+</arguments>
+<assign>
+<var>&amp;{headers}</var>
+</assign>
+<msg timestamp="20200722 21:45:51.406" level="INFO">&amp;{headers} = { Content-Type=application/json }</msg>
+<status status="PASS" starttime="20200722 21:45:51.405" endtime="20200722 21:45:51.406"></status>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>email=${email}</arg>
+</arguments>
+<assign>
+<var>&amp;{payload}</var>
+</assign>
+<msg timestamp="20200722 21:45:51.406" level="INFO">&amp;{payload} = { email=eduguedes@gmail.com }</msg>
+<status status="PASS" starttime="20200722 21:45:51.406" endtime="20200722 21:45:51.406"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>api</arg>
+<arg>${api_url}</arg>
+</arguments>
+<msg timestamp="20200722 21:45:51.406" level="INFO">Creating Session using : alias=api, url=http://ninjachef-api-qaninja-io.umbler.net, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20200722 21:45:51.406" endtime="20200722 21:45:51.407"></status>
+</kw>
+<kw name="Post Request" library="RequestsLibrary">
+<doc>Send a POST request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>api</arg>
+<arg>/sessions</arg>
+<arg>data=${payload}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<assign>
+<var>${resp}</var>
+</assign>
+<msg timestamp="20200722 21:45:51.712" level="INFO">POST Request : url=http://ninjachef-api-qaninja-io.umbler.net/sessions 
+ path_url=/sessions 
+ headers={'User-Agent': 'python-requests/2.23.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '32'} 
+ body={"email": "eduguedes@gmail.com"} 
+ </msg>
+<msg timestamp="20200722 21:45:51.712" level="INFO">POST Response : url=http://ninjachef-api-qaninja-io.umbler.net/sessions 
+ status=200, reason=OK 
+ body={"_id":"5f1744fc42f1f60016038846","email":"eduguedes@gmail.com","__v":0} 
+ </msg>
+<msg timestamp="20200722 21:45:51.713" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20200722 21:45:51.407" endtime="20200722 21:45:51.713"></status>
+</kw>
+<kw name="Status Should Be" library="RequestsLibrary">
+<doc>Fails if response status code is different than the expected.</doc>
+<arguments>
+<arg>200</arg>
+<arg>${resp}</arg>
+</arguments>
+<status status="PASS" starttime="20200722 21:45:51.713" endtime="20200722 21:45:51.714"></status>
+</kw>
+<kw name="Convert To String" library="BuiltIn">
+<doc>Converts the given item to a Unicode string.</doc>
+<arguments>
+<arg>${resp.json()['_id']}</arg>
+</arguments>
+<assign>
+<var>${token}</var>
+</assign>
+<msg timestamp="20200722 21:45:51.716" level="INFO">${token} = 5f1744fc42f1f60016038846</msg>
+<status status="PASS" starttime="20200722 21:45:51.715" endtime="20200722 21:45:51.716"></status>
+</kw>
+<msg timestamp="20200722 21:45:51.717" level="INFO">${token_cozinheiro} = 5f1744fc42f1f60016038846</msg>
+<status status="PASS" starttime="20200722 21:45:51.405" endtime="20200722 21:45:51.717"></status>
+</kw>
+<kw name="Set Test Variable" library="BuiltIn">
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<arguments>
+<arg>${token_cozinheiro}</arg>
+</arguments>
+<msg timestamp="20200722 21:45:51.719" level="INFO">${token_cozinheiro} = 5f1744fc42f1f60016038846</msg>
+<status status="PASS" starttime="20200722 21:45:51.718" endtime="20200722 21:45:51.719"></status>
+</kw>
+<status status="PASS" starttime="20200722 21:45:51.404" endtime="20200722 21:45:51.720"></status>
+</kw>
+<kw name="E &quot;fernando@bol.com.br&quot; é o email do meu cliente" library="kws">
+<kw name="Set Test Variable" library="BuiltIn">
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<arguments>
+<arg>${email_cliente}</arg>
+</arguments>
+<msg timestamp="20200722 21:45:51.724" level="INFO">${email_cliente} = fernando@bol.com.br</msg>
+<status status="PASS" starttime="20200722 21:45:51.723" endtime="20200722 21:45:51.724"></status>
+</kw>
+<kw name="Get API token" library="helpers">
+<arguments>
+<arg>${email_cliente}</arg>
+</arguments>
+<assign>
+<var>${token_cliente}</var>
+</assign>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+</arguments>
+<assign>
+<var>&amp;{headers}</var>
+</assign>
+<msg timestamp="20200722 21:45:51.727" level="INFO">&amp;{headers} = { Content-Type=application/json }</msg>
+<status status="PASS" starttime="20200722 21:45:51.726" endtime="20200722 21:45:51.727"></status>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>email=${email}</arg>
+</arguments>
+<assign>
+<var>&amp;{payload}</var>
+</assign>
+<msg timestamp="20200722 21:45:51.728" level="INFO">&amp;{payload} = { email=fernando@bol.com.br }</msg>
+<status status="PASS" starttime="20200722 21:45:51.727" endtime="20200722 21:45:51.728"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>api</arg>
+<arg>${api_url}</arg>
+</arguments>
+<msg timestamp="20200722 21:45:51.729" level="INFO">Creating Session using : alias=api, url=http://ninjachef-api-qaninja-io.umbler.net, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20200722 21:45:51.728" endtime="20200722 21:45:51.730"></status>
+</kw>
+<kw name="Post Request" library="RequestsLibrary">
+<doc>Send a POST request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>api</arg>
+<arg>/sessions</arg>
+<arg>data=${payload}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<assign>
+<var>${resp}</var>
+</assign>
+<msg timestamp="20200722 21:45:51.941" level="INFO">POST Request : url=http://ninjachef-api-qaninja-io.umbler.net/sessions 
+ path_url=/sessions 
+ headers={'User-Agent': 'python-requests/2.23.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '32'} 
+ body={"email": "fernando@bol.com.br"} 
+ </msg>
+<msg timestamp="20200722 21:45:51.941" level="INFO">POST Response : url=http://ninjachef-api-qaninja-io.umbler.net/sessions 
+ status=200, reason=OK 
+ body={"_id":"5f1744fc42f1f60016038847","email":"fernando@bol.com.br","__v":0} 
+ </msg>
+<msg timestamp="20200722 21:45:51.941" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20200722 21:45:51.730" endtime="20200722 21:45:51.941"></status>
+</kw>
+<kw name="Status Should Be" library="RequestsLibrary">
+<doc>Fails if response status code is different than the expected.</doc>
+<arguments>
+<arg>200</arg>
+<arg>${resp}</arg>
+</arguments>
+<status status="PASS" starttime="20200722 21:45:51.942" endtime="20200722 21:45:51.942"></status>
+</kw>
+<kw name="Convert To String" library="BuiltIn">
+<doc>Converts the given item to a Unicode string.</doc>
+<arguments>
+<arg>${resp.json()['_id']}</arg>
+</arguments>
+<assign>
+<var>${token}</var>
+</assign>
+<msg timestamp="20200722 21:45:51.943" level="INFO">${token} = 5f1744fc42f1f60016038847</msg>
+<status status="PASS" starttime="20200722 21:45:51.942" endtime="20200722 21:45:51.943"></status>
+</kw>
+<msg timestamp="20200722 21:45:51.943" level="INFO">${token_cliente} = 5f1744fc42f1f60016038847</msg>
+<status status="PASS" starttime="20200722 21:45:51.725" endtime="20200722 21:45:51.943"></status>
+</kw>
+<kw name="Set Test Variable" library="BuiltIn">
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<arguments>
+<arg>${token_cliente}</arg>
+</arguments>
+<msg timestamp="20200722 21:45:51.944" level="INFO">${token_cliente} = 5f1744fc42f1f60016038847</msg>
+<status status="PASS" starttime="20200722 21:45:51.944" endtime="20200722 21:45:51.944"></status>
+</kw>
+<status status="PASS" starttime="20200722 21:45:51.721" endtime="20200722 21:45:51.944"></status>
+</kw>
+<kw name="E que &quot;Carne de Jaca Louca&quot; está cadastrado no meu dashboard" library="kws">
+<kw name="Set Test Variable" library="BuiltIn">
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<arguments>
+<arg>${produto}</arg>
+</arguments>
+<msg timestamp="20200722 21:45:51.946" level="INFO">${produto} = Carne de Jaca Louca</msg>
+<status status="PASS" starttime="20200722 21:45:51.945" endtime="20200722 21:45:51.946"></status>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>user_id=${token_cozinheiro}</arg>
+</arguments>
+<assign>
+<var>&amp;{headers}</var>
+</assign>
+<msg timestamp="20200722 21:45:51.947" level="INFO">&amp;{headers} = { user_id=5f1744fc42f1f60016038846 }</msg>
+<status status="PASS" starttime="20200722 21:45:51.946" endtime="20200722 21:45:51.947"></status>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>name=${produto}</arg>
+<arg>plate=Tipo</arg>
+<arg>price=20.00</arg>
+</arguments>
+<assign>
+<var>&amp;{payload}</var>
+</assign>
+<msg timestamp="20200722 21:45:51.948" level="INFO">&amp;{payload} = { name=Carne de Jaca Louca | plate=Tipo | price=20.00 }</msg>
+<status status="PASS" starttime="20200722 21:45:51.947" endtime="20200722 21:45:51.948"></status>
+</kw>
+<kw name="Get Binary File" library="OperatingSystem">
+<doc>Returns the contents of a specified file.</doc>
+<arguments>
+<arg>${EXECDIR}/resources/images/produto.jpg</arg>
+</arguments>
+<assign>
+<var>${image_file}</var>
+</assign>
+<msg timestamp="20200722 21:45:51.948" level="INFO" html="yes">Getting file '&lt;a href="file://c:\roboweek\ninjachef\web\resources\images\produto.jpg"&gt;c:\roboweek\ninjachef\web\resources\images\produto.jpg&lt;/a&gt;'.</msg>
+<msg timestamp="20200722 21:45:51.977" level="INFO">${image_file} = \xff\xd8\xff\xe1*RExifMM*P\xf8\x9e\xa4\xac(1\xb42\xd2\x87i\x...</msg>
+<status status="PASS" starttime="20200722 21:45:51.948" endtime="20200722 21:45:51.977"></status>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>thumbnail=${image_file}</arg>
+</arguments>
+<assign>
+<var>&amp;{files}</var>
+</assign>
+<msg timestamp="20200722 21:45:51.999" level="INFO">&amp;{files} = { thumbnail=\xff\xd8\xff\xe1*RExifMM*P\xf8\x9e\xa4\xac(1\xb42\xd2\x87...</msg>
+<status status="PASS" starttime="20200722 21:45:51.977" endtime="20200722 21:45:51.999"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>api</arg>
+<arg>${api_url}</arg>
+</arguments>
+<msg timestamp="20200722 21:45:51.999" level="INFO">Creating Session using : alias=api, url=http://ninjachef-api-qaninja-io.umbler.net, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20200722 21:45:51.999" endtime="20200722 21:45:52.000"></status>
+</kw>
+<kw name="Post Request" library="RequestsLibrary">
+<doc>Send a POST request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>api</arg>
+<arg>/products</arg>
+<arg>files=${files}</arg>
+<arg>data=${payload}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<assign>
+<var>${resp}</var>
+</assign>
+<msg timestamp="20200722 21:45:53.753" level="INFO">POST Request : url=http://ninjachef-api-qaninja-io.umbler.net/products 
+ path_url=/products 
+ headers={'User-Agent': 'python-requests/2.23.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'user_id': '5f1744fc42f1f60016038846', 'Content-Length': '133490', 'Content-Type': 'multipart/form-data; boundary=9f8ae52f831fe18a2de45bae66a15780'} 
+ body=b'--9f8ae52f831fe18a2de45bae66a15780\r\nContent-Disposition: form-data; name="name"\r\n\r\nCarne de Jaca Louca\r\n--9f8ae52f831fe18a2de45bae66a15780\r\nContent-Disposition: form-data; name="plate"\r\n\r\nTipo\r\n--9f8ae52f831fe18a2de45bae66a15780\r\nContent-Disposition: form-data; name="price"\r\n\r\n20.00\r\n--9f8ae52f831fe18a2de45bae66a15780\r\nContent-Disposition: form-data; name="thumbnail"; filename="thumbnail"\r\n\r\n\xff\xd8\xff\xe1*RExif\x00\x00MM\x00*\x00\x00\x00\x08\x00\x0c\x01\x00\x00\x03\x00\x00\x00\x01\x05P\x00\x00\x01\x01\x00\x03\x00\x00\x00\x01\x07\xf8\x00\x00\x01\x02\x00\x03\x00\x00\x00\x03\x00\x00\x00\x9e\x01\x06\x00\x03\x00\x00\x00\x01\x00\x02\x00\x00\x01\x12\x00\x03\x00\x00\x00\x01\x00\x01\x00\x00\x01\x15\x00\x03\x00\x00\x00\x01\x00\x03\x00\x00\x01\x1a\x00\x05\x00\x00\x00\x01\x00\x00\x00\xa4\x01\x1b\x00\x05\x00\x00\x00\x01\x00\x00\x00\xac\x01(\x00\x03\x00\x00\x00\x01\x00\x02\x00\x00\x011\x00\x02\x00\x00\x00\x1e\x00\x00\x00\xb4\x012\x00\x02\x00\x00\x00\x14\x00\x00\x00\xd2\x87i\x00\x04\x00\x00\x00\x01\x00\x00\x00\xe8\x00\x00\x01 \x00\x08\x00\x08\x00\x08\x00\n\xfc\x80\x00\x00\'\x10\x00\n\xfc\x80\x00\x00\'\x10Adobe Photoshop CS6 (Windows)\x002019:08:21 15:07:01\x00\x00\x00\x00\x04\x90\x00\x00\x07\x00\x00\x00\x040221\xa0\x01\x00\x03\x00\x00\x00\x01\xff\xff\x00\x00\xa0\x02\x00\x04\x00\x00\x00\x01\x00\x00\x01,\xa0\x03\x00\x04\x00\x00\x00\x01\x00\x00\x01,\x00\x00\x00\x00\x00\x00\x00\x06\x01\x03\x00\x03\x00\x00\x00\x01\x00\x06\x00\x00\x01\x1a\x00\x05\x00\x00\x00\x01\x00\x00\x01n\x01\x1b\x00\x05\x00\x00\x00\x01\x00\x00\x01v\x01(\x00\x03\x00\x00\x00\x01\x00\x02\x00\x00\x02\x01\x00\x04\x00\x00\x00\x01\x00\x00\x01~\x02\x02\x00\x04\x00\x00\x00\x01\x00\x00(\xcc\x00\x00\x00\x00\x00\x00\x00H\x00\x00\x00\x01\x00\x00\x00H\x00\x00\x00\x01\xff\xd8\xff\xed\x00\x0cAdobe_CM\x00\x02\xff\xee\x00\x0eAdobe\x00d\x80\x00\x00\x00\x01\xff\xdb\x00\x84\x00\x0c\x08\x08\x08\t\x08\x0c\t\t\x0c\x11\x0b\n\x0b\x11\x15\x0f\x0c\x0c\x0f\x15\x18\x13\x13\x15\x13\x13\x18\x11\x0c\x0c\x0c\x0c\x0c\x0c\x11\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x01\r\x0b\x0b\r\x0e\r\x10\x0e\x0e\x10\x14\x0e\x0e\x0e\x14\x14\x0e\x0e\x0e\x0e\x14\x11\x0c\x0c\x0c\x0c\x0c\x11\x11\x0c\x0c\x0c\x0c\x0c\x0c\x11\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\xff\xc0\x00\x11\x08\x00\xa0\x00\xa0\x03\x01"\x00\x02\x11\x01\x03\x11\x01\xff\xdd\x00\x04\x00\n\xff\xc4\x01?\x00\x00\x01\x05\x01\x01\x01\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x03\x00\x01\x02\x04\x05\x06\x07\x08\t\n\x0b\x01\x00\x01\x05\x01\x01\x01\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x01\x00\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x10\x00\x01\x04\x01\x03\x02\x04\x02\x05\x07\x06\x08\x05\x03\x0c3\x01\x00\x02\x11\x03\x04!\x121\x05AQa\x13"q\x812\x06\x14\x91\xa1\xb1B#$\x15R\xc1b34r\x82\xd1C\x07%\x92S\xf0\xe1\xf1cs5\x16\xa2\xb2\x83&amp;D\x93TdE\xc2\xa3t6\x17\xd2U\xe2e\xf2\xb3\x84\xc3\xd3u\xe3\xf3F\'\x94\xa4\x85\xb4\x95\xc4\xd4\xe4\xf4\xa5\xb5\xc5\xd5\xe5\xf5Vfv\x86\x96\xa6\xb6\xc6\xd6\xe6\xf67GWgw\x87\x97\xa7\xb7\xc7\xd7\xe7\xf7\x11\x00\x02\x02\x01\x02\x04\x04\x03\x04\x05\x06\x07\x07\x06\x055\x01\x00\x02\x11\x03!1\x12\x04AQaq"\x13\x052\x81\x91\x14\xa1\xb1B#\xc1R\xd1\xf03$b\xe1r\x82\x92CS\x15cs4\xf1%\x06\x16\xa2\xb2\x83\x07&amp;5\xc2\xd2D\x93T\xa3\x17dEU6te\xe2\xf2\xb3\x84\xc3\xd3u\xe3\xf3F\x94\xa4\x85\xb4\x95\xc4\xd4\xe4\xf4\xa5\xb5\xc5\xd5\xe5\xf5Vfv\x86\x96\xa6\xb6\xc6\xd6\xe6\xf6\'7GWgw\x87\x97\xa7\xb7\xc7\xff\xda\x00\x0c\x03\x01\x00\x02\x11\x03\x11\x00?\x00\xf4\xdf\xeb%\xbd\xbc\x05\x17\x0e\xe8\x16=\xed\x04\xb6\xb2\xf3\xe0\x12M6\xb7\x05\x1b\x1e\xed\xa7`\x97vT\x1b\x9bo\xa9\xb1\xf5z~\x12yV\xeaq~\xbfxB\xd3T\x83&amp;\xab\xed\x0c`\x04F\xa5\xe0\xf7\xf0ON6C@\x16D\x0e\xe3\x92\xad\xa7\x9d\x12U\xb5\x1dVn\xf6\x96\x96\x867\x91\xdc\xa1\xdf^[\xec\xdf[\xb6\x8f\x05x\x93\x12Ul\x93~\xc9\xa8\x02x\x83\xa2JC\xd3\xf1\x1d\x86\xcb\x1a\xfb}GZ\xf3a\'\xc4\xabN\xac\xbf\xe8\x90\x82\x06\xc6{\xc4\x18\xd4\xf2\xa3E\xcc`\xb0\x13\x1bH#\xceRR\xd7t\xd3h\xd5\xc0|\x92gF\xd9]uWs\xaan\xefS \xd7\xedu\x91\xf4)u\x83\xdc\xca\x7f\x7fj\xba-i0\xa1\xd4q\xdf\x99\xd3\xf2\xb1*\xb7\xd0\xb3*\x87\xd5]\xe0N\xc7=\x8e\xad\xb6m\x96\xee\xf4\xdc\xed\xe8PU\x97\x13\xa0u\xe6u\x91\x98\xdc\x07\xec\xbb\x01\xf5\xee\xae\xc6=\x8d\xb2\x9b[\xea\xe3\xdd\xb5\xf6]\xfa&lt;\x9a}\xf4\xbfuw\xff\x00\xa7\xc7[\x8f\x16~m[\xdb:\x12\xe0\xdd&lt;\xb4+\x91\xfa\xa4\xdazo\xd6.\xaf\x86\xc3m\xf6\xe5\xe5\x8cv\x8b%\xd62\x8c\x1cz\x89\xca\xc9\xc8w\xd3\xa5\xcf\xcd\xc6\xc7\xa3\xd9\xea~\x97\xfc7\xf85\xf5\xcb\xa8\xdb\x91\xd4p\xba_L\xcc\xcbnvVKq=,W\xba\x91KkmY\xddC+x4\xd7\x97\x7f\xd8rqX\xca\xaf\xb2\xccj}\xff\x00\xcd\xe4oF\x91oWm\x16^\xd0\xdb*\x11\xc85\xd9\xff\x00\x92hT\xfa\xc7SoC\xe9\xd7\xf5,\xfbCqq\xda=:X\x0b\xdeO\x87\xe6\xba\xfb\xac\xfc\xdf\xe6jg\xf3\xb6\xd9\xe9\xfb\xd7\t\x8b\xf5\xaf9\xfdb\xa1\xd2\xb2\x1f\xfb;\x1c\xe4\xdd\xf6\x16;\xd5\xb6\xe6V\xe3\x89\x86\xfc\xec\x9c\x9f[&amp;\xfc\xde\xb3\xd4\xed\xaf\x1a\xbc}\xff\x00\xaaQ\xf6o\xf4\xbe\xb2\xc8\xbd\xbfXz\x87\xd5\xee\x9b\x9d\xd5\xf3\xecn\x0e{j\xc0\xa2\xdc\x8b\tc-\xb2\xfc\xa6\xdf\x9bslq\xfeg\xa7Sw\xad\x95w\xf8\x1c\xbf\xd1Y\xe9\xd2\x95*\xdfR\xc5\xeb\x98\x195b\xd83\xab\xc6\xb33\x19\x99\x8c\xc7\xb4\xb7p\xa9\xec7\xefs\\\xefg\xe8\x9a\xf7\xff\x009\xfe\x06\xff\x00\xf0t\xd8\xaeb\xde\xfc\xbaY\x93\x89\x91Ff-\xa2k\xb9\x9a\x83\x04\xb5\xdbl\xa9\xcfc\xd7\x9e\xd9\xf5{\xac\xfa]g\xabf\x06\xe3tL\xaca\x97\xe9\xb5\x8d9\x1ff\xa7\x1e\xea1:eU\xd9\xed\xc2\xc9\xa7\x07"\xear\xf2-\xa6\xefN\xdfC\xd2\xf5?XY=[/\xae\xb7\xa1b\xf5,\x87\xbf\'\xa7\xe2W\x95]W\xf4\xd2\xfa)9\xed\xbc\xe1W\xd5\xb3r\xdbf\xfc\xafU\xce\xfb}9;\x19\xf6\x8c\xcf\xd0z\x7f\xa6\xca\xb1*S\xebvW\x94u\xaa\xe6\xb0\x81\xeek\x9b\xb8|Z\xefj\x0f\xa3\xd5I\x91\x95\\xz\x7f\xf9\x92\x8fF\xc8\xba\xee\x99\x8ar\xaee\xf9\xb4\xb1\xb8\xf9\xef\xac\xb4\x81\x92\xd6\xb5\xb9L\xfd\x1f\xe8\xf7\xb2\xfd\xdb\xf6#\x8b\xda\x1f\xb0L\x92@\x9f$\x94\xff\x00\xff\xd0\xf4\xb7\x11\n26\xe8S\xb8\xe9\xf4P\x8b\xd8\xd0d\x1d\x10J+*\xaa\xd3\xee\xfaC\x83\xe0\x8f@\rd\x031\xdd\x03{I\x11\\\xc8\x99D\xad\xf6\tkX&gt;\xf4\x92\x98\xbd0\xb48\x96\x827\x0eGu\x13\xea8{\x80\x01D04\x9d\x8d\rq\xe4\xf7IL.\xf5\xec67v\x91\x0c\x03C*\xa5X\x0fk\xab\')\xef-\xd5\xec.\xe4\xa7\xea\xdb\xb1p\xac\xb6\xa96\x9f5\xe4\xbdC+\xa9Q\x9c\xec\xacl\xab\xaa\xb2w\x0b\x1a\xf3?\xda\x07\xda\xef\xed M\x1a\\\x06\x96\xfbC\x8c\r\xae\xd4\x14\x1f\xb3\xd6\xe3.\xd7\xe2\xb0\xbe\xa4}d\xbb\xaet\xb9\xcdde\xd2\xe3[\xde\x07\xb5\xd1\xf9\xe3\xf7w~\xe2\xe8\x18\xe7\xfa\x9e\xe1\xedE\r&gt;\xbd\xd5\xdb\xd0\xfa._U}f\xd6\xe20\x16\xd6\x0cns\x9c\xdajaw\xe6\xb7\xd4\xb1\xbb\xd6p\xfa\xe7\xfb\'\x07\x1d\xbfY+\x0c\xcf\xbbm\xbb0\x1a\xfb\x9a\xdc{\rl\xaf:\xfa\xad\xfd6-M\xbe\xff\x00\xb1\xbe\xb7\xbe\xdb,\xc8\xfe\x8f\xea-n\xb5\x87\xd33\xbaNV\x1fS\xb0U\x83{6]apf\xc9-\xf4\xeck\xdd\xedk\xd9n\xc7W\xbf\xf3\xd7/\xd4:/F\xc9\xd9\x96\xdf\xacu\xdd\xd4i\x18\xed\x06\xfb+\x18\xf67\x1a\xc6\xddEw\xd1F\xcb}?\xa7\xb9\xb5\xdf\xfaK\xff\x00N\x814\x8a\xb7^\x9f\xae?V63\xaac\x86o\xcd\xcb\xab\xa7]c\x18\xd1x\xb0\xba\xca\xf1\xfe\xdb\xeek\xaa\xc6k*\xb6\xd6&gt;\xdb?\x98\xff\x00\x05\xfe\rd\xb7?\xea\xed]H\xfdg\xb2\xcc\xcb\x1es\x1d\x85\x85\xd3=\x16\x8b[\x95\x91^;2.\xa5\x9f\xcf;\xed8l\xc6\xb3\xf4\x96~\x85\x8f\xf4\xbf\xa4[\xe8*g\xea\xefE\xc8\xa3;\x0b;\xac\xe27\x1a\xec\x93\x97\x8bn=\xa0\\mp\xaa\xb7ddW\xfa:\xbdJ\xe9\xa6\xda\x19_\xe9?\xa6\xe5_\xfc\xe7\xa4\x9f\x0b\x16\x8f\xda\xf7g~\xd4\xc5\xc0\xb7\x1b?7/\x16\xf7&gt;\xbb\xd9h\xcf\x1e\x83\xac\x15\xb6\xd69\xbff\xc4e^\x9f\xab\xff\x00j\x7fGe^\x9a\x1cA&lt;/]oB\xfa\xaf\xd3.\xaf\xac]\x89F-\x98!\xc2\xbc\x8f\xa2\xd6z\xae\xd7k\x1b\xb5\xaf\xba\xdb\xad\xfd\x17\xe8\xfd\x7fR\xdfN\x9f\xe7\x16^\x17\xd6\xbc\x1e\xacq*\xeax\x95\xe4\xb7\xabe\xd8z.;*\xf5\\1\xe8;Y\xd4s\x99q\xfd\x07\xbd\x8f\xb3{\x19\xfa6\x7f\xc5\xddb\x97S?U\xee\xe98\x98\x15\xf5V\xd2\xcc\x0b*~=\xd4[[\xadk\xab\x0e\xab\xd5\x7f\xa8\x1e\xdb\x1f\xb6\xdb,}\x9bw\xfa\xdf\xa7\xfeuat.\x93\x87]\x14;3\xab\xe2a\xdc\xcc\'t\xac\x8ak\xb6\xbbwbz\x9e\xbb\xdfNC\x1e\xcfC\'&amp;\xdf[\xdf\xfaoK\x1a\xfa\xff\x00\x9b\xc9\xad\x1e!\xfc\x8a8^\xd3\xeb\x0e\x7fT\xe9\xdd&gt;\xee\xa1\x82\xdc{[\x87U\xb9\x195\\^\x0b\x99SM\x9e\x9e;\xab\xfa\x16\x7f.\xcf\xf8\xbf\xf0\x9e\xadY\xb9\x7fYz\x06c\xb1z\x06}/\xbd\xfdA\xb42\xe6R\xc7:\xaa,\xbd\x9fi\xc4\xaa\xeb\x9b\xb2\xca-\x7f\xa6\xeb\xb1]S}Z}\x1f\xb4\xfe\x87\xf9\xc5[\xebm\x98}[\xa6\xb3\x0b\x03\xa9\xe0\xb6\xbf\xd26\xda\x1f\x90*\xad\xc1\xd5YF3\xdckm\x9e\xa30\xaf}y?d\xd9\xb2\xefK\xf9\x0b:\xcf\xab\xdfW\xa9\xc9\xc7\xc8\xc0\xeb\xb4\xd5\xb1\xdf\xa7\xa9\xd63\xd3\x87\xe3~\xcd\xc8\xc8\xc6me\xb631\xf5\xb7}N\xba\xdb\xab\xa6\xc4\xb8\x82\x80u[\xf5\xb3\xea\xe7L\xe8\xb8\xf7\xd3F[q\x1a\xebN\x1d&gt;\x8b\xfdk\xd9[~\xd3\x91\xd4\xab\x17\x96:\xec_N\xef\xb6[\x99}\x9f\xa4\xff\x00\t\xfae\xbdU\xcc\xbe\xba\xb2j;\xaa\xbd\x8d\xb2\xa2Ao\xb5\xe0=\x84\xb5\xde\xe6\xbbi\\gR\xfa\xbb\xf5s7\x00c\xb7\xeb\x14Y\x8f\x8ap\xb1K\xae\xa8V(\x06\xb7\xe3\xe2\xdf]Mf\xfa\xebu5\xfa\x97W\xe9\xe4d\x7f\x86\xf63\xd2]gJ\xaa\xa1\xd3\xaa,\xb9\x99;\xcb\xedu\xf5G\xa6\xf7\xda\xf7\xdbs\xaa\x8d\xdf\xa2m\x8e\xf4\xea\xf7\x7f6\xc4\x81\xb2\xaa\xa7\xff\xd1\xf4\x92_\x1a\x80\xaaeZ\xc6V\xe7\x99\x1bU\xb7\xbc5\x92\xe8o\xc4\xaa\x0f\xea\x18\x9b\xc3Ik\x87\x054\xc8\r\xc8\x1ek\xe3\x12v\x04\xf9 \xa6\xcc\x87\x06\xc0\xde&amp;Io\x82=9%\x97\x1d\xect\x1d$\x04\xd4}\x99\xd7\x13H\xda\x0f;N\x88\xf485\xee\xd4\xfcJ#]AQ\xd3B\x1b\r\xb2\xb77\x9e|Q\x04F\x88E\xd5~p\x07\xc1(\xda\tc\xa3\xc8\xa4\xb5\x8eM"\xc6\x11\xde4^w\x99\xf5\x1b\xac[\x97g\xa4\xea\xc6;\xdcL\xbae\xa0\x9e\xcdo\xd2\xda\xbd\x10\xdf\x03\xde&gt;aF\xe7&gt;\xca\x8f\xd9\xf6\x92{\xbb\x84\x88H$9\xdfW\xfaM\x1d#\x05\xb84\t\x8dl\xb0\x8f\xa4\xe3\xcb\x8a\xd5\x03\xdd\x07M\x10(\xa6\xe6\x02n\xb08\xff\x00$@Hf\xd0l\xf4\xc9\x82;\xa4\xa2\x93"\xb7\x16\xee\xaa\xc3S\xc7\x0e\x1f\x91\x1d\xaev\xc0\\\xe3?\x15U\xd9\x94\xb0\x9d\xf2v\xf8j\xa5\xf6\x82\xfa\xc3\x99Qv\xed`\xe8\x92\x9e?\xfcf\xfdd\xeb\x1d#\x0b\x0f\xf6FK\xf1\xec\xbe\xe76\xc7\x80\x1cHk}\xaci\xb0?o\xb9\xc8?]:\xf7]\xe9\xf9\x9d7\xa3t\xbb\xce6_U\xb3\xd3\x19V\xf0\xc0\xe7\xb7\x1d\x9fI\x8e\xdb\xee\x7f\xe9-\xd9\xec\xff\x00\x06\xb5~\xb5\xfdZo\xd6j\xb1\xb1\xb2\xdc\xfcfc=\xd64\xd3\x04\x92\xe0\x1b\xae\xff\x00\x82\xcb\xbb\xfcZ`\xe5a\xbe\x8c\xac\xac\xdc\xab\x9c\xf6\xb9\x99w&lt;=\xec\r\x0e\xfd\x1b+w\xb7c\xfdO\xd2%\xd4\'\xa1\xf1p\xb3&gt;\xb5}u\xfa\xbb\x91\xd5z\x06gP\xfb]\xf5R-\xa3,\xb49\xf5\x90[d\x82\xf6\xfd\x1b\xa8s\x9b\xb2\xed\xfe\x9b\xfd/O\xfc\'\xa9{3\xeb\x97^\xe9\xb9\xbfV\xddfS\xdfF_O\xaf76\xb0\xd6\x03s\xdc,\xb2\x1e\xf71\xdbw5\x95\xd7\xfa5\xad\x81\xfe.:M\x18Y\xb8\xb7\xbe\xfc\x8c\x8e\xa0\xc0\xcb\xb3\x9e\xe1\xea\xb5\xa1\xcd\xb7m-#o\xb9\xf5\xb3\xd5\xdd\xfc\xe2\xad_\xd4\x1e\x9d\xd1n\xaf6\xc7\xe4\xf5w\xe3\xd6\xea\xb1q\xefpk\x1a\xd7\x07\r\x8ch\x0f\xfa&gt;\xa3\xfd?s+\xf5?H\x95\xad\xa2\xc7\xea\xab\xbf\xc6\x17\xd6\x03\x87\xf5\x88u\x9aY\x85vC\x86F\x18h\xda\xcak~\xdb*\x15zn\xfd#\xda\xd7\xb2\xbfw\xab\xe9\xfaw}\xa1fb\x7f\x8c~\xa7g\xd7\x86\xd9nQ\x1d\x02\xcc\x93\x86\xda%\x81\xa1\x8e\x9aj\xc8\xd7\xdf\xfa;\x0b2l\xb7\xfe\xb6\xaft\xef\xf1i\xd3Z\xe1{\xf2sh\xac;\xd6\xa6\x86\xbd\xb1U\xb1\xfa;K\x9b\xfc\xe3\xea\xff\x00\xad\xff\x00]0\xff\x00\x17?S\xee\xad\x9d:\xbbnfEo\x9bs7\x83k\xc1\xff\x00\x06\xeaO\xea\xf53\xf7v\xb3zV\x15\xc2_G\xdcZH.)\x17r\xedJ\x855\x9a\xeamn{\xae\x0ckY\xea&lt;\x82\xf7m\x1bw\xd8\xe6\xed\xddc\xff\x00=\x10\xb6\x1a@\x98EO\xff\xd2\xdd\xb0e:\xe7V\xe8\xae\xd6\x92\xd7z\xaf\x83&gt;M?Kw\xe6?\xf3\xd5\x8e\x9b\xd22\x9d\'"\xd2\xea\xfb\xbc\xed3\xff\x00\x14\xe6{\\\xd5[\xab}T\xc9\xeb\x81\xbdI\x9dG\xec]D\xb1\x85\x95\xb0\x03H\xd8=\xb2\xe1\xb2\xe7\xfes=_\xfc\x01Y\xcf\xc9\xeb\x18\x98\x0cmT7%\xf5\x8a\xdb\xe8a\xbb{\xb6\x81\x0f?\xa5m.\xd9\xbb\xf77\xacX\xf0\xcaQ37\x19t\xb1\x1f\xee\xf1\x1f\xfb\xc7ZS\xf4\xf0\xe31\x12\xd0OO\x94\xff\x00Q\xd7gNa\x1b(\x10\x1a\x04&gt;`\xcf\xc5V\xca\xb6\xfcf\x8a\xdfhm\x96\x1746u\xf6\x8d\xdb\x9a\xbc\xe8\xfdo\xeb\xa37%\x8d\xbe\xfci\xb0\x8b\xb1\x98\xd3\xea1\xa0{[\xb2\xc1\xbe\xa7\xb7\xf3\xfd\xaa\xb5\x9fX\xba\x8dw3!\xf5\xbe\xca*\x10M\xc1\xf2\xd7;\xe8\xbb\xd4\xff\x00\x84V\x8f\x10\x068\xc7\x05\x8a\xdf\x87\xf9I\x88a\xba\x94\xe6$\x01\xbd\xb8\xbf\x94_U\xa7?\xd4\xad\xa0W\xbd\xe4jF\x82|\xd3\xfd\xacX\xdfOa\x16\r,\x8e\x1b\xf3^]\x93\xf5\xcf\xaa\xd7s\xf1\xbae\x95zd\x03fC\x1a\xe7{\xa3\xdc\xca\xfdO\xfa\xb5\xab\xd1z\xf6u\xb8\x97^\xe7\xb9\xd7\x8d..\xd3k\x80\xf6\xbb\xfbMHO\x9b\x88\x17F\xb4\xad\t\xf3\xfeRW\xb1\x86D\xd1\xf2\xf9\x9e\xd3\xed\x0f\xaa\xb2\xd8\x9b\x18y\xf1\t\xf1\xf3\xa8w\xd2\xfas\xabD.\x7f\x0b\xaf\xd4i\x17\\\xc0G\xfaF\xbaN\xa7\xdb-\xfd\xd7)un\xa1\x85K)\xea\x9d&gt;\xf6\xbf\x16\xe7\xba\xbb\xf6\xc1-\xb1\xad6\xedg\xb9\xbe\xfd\x8cz\x9a\x1c\xd7\x14\x8ce\x03\x0e\xdf\xa5\x7f\xe2\xfe\x93\x0c\xf9S\x105\xbbzw\x1a\x1e\x03\xe4\xc7q0\xab\\\xfa\x06\xad\rl\xb87w0O\xef.33\xeb\xafR\xc4\xcf\xaf\x0f\n\xe6\xe5\xdb`kv\n\xda\xdb\x05\xf6{Y\x84Z\x1de\x16\xdb\xb9\xcd\xdfk\x1f[\x18\xba\xbc&lt;n\xa4\xfa[\xfbK+\xd6\xc8\x80\xf9h\x9aj\x07\xfd\x1b]\x0f\xbb\xdd\xf4-~\xcf[\xfc\x17\xd9\xd0\x9f6a\\X\xc8\xbf\xeb\x03h\xfb\xb8\x1bd\x07\xc8K\xf86\xab\xca\xc5\x16\x8a\x1dcAn\x9a\x98%\xc7\xb7\xee\xac\xec\xae\xb5\x93nA\xab\x16\xcfC\x19\x9a\x076=[\x08\xfaN\xdc\xf6\xbf\xd1\xa7\xfd\x17\xb3\xd4z\xb5gN\xb3!\x9e\x905\xe3:\xdfsrh\xe3q\x9f\xe7\xaax\xaf~\xff\x00\xf0\x8d\xf6[\xfe\x8e\xf5\xca\xd7\xd5:}\x17YNm\xd5Q~=\x8e\xaa\xda\xde\xf1\xed\xb2\xb2Yf\x9b\xb7;\xdc7\xb1\xca\xb6no,\xe1\xe8\x1c:\xef\x1d\xfc5\x8bc\x97\xe5\xf1Y$\xf1\x10&gt;Y\x7f\xd2\xa7\xb6\xae\xd7WS\r\xae}\xa4\x965\xdb\x84\x90\xe7\xfd\x1d\xaf\x81\xea7\xf7\xff\x00q[5X\xe6\x96\xc6\xc3\xe2\xb0\xbaV~&amp;s\x1c\xfd\xcf\xc8\xa9\xdaoy-:\x1d\xcd\xb6\xa0\xff\x00\xf5\xff\x00\xad\xab\xec\xa3\'\x05\x85\xa6El\x04\xe8w\x02\xc0&gt;\x9f\xb9\xde\xa3v;\xe9\xfbT\x9c\xbf4h\x82$b&gt;\xb2\xc7\xfd\xe6\x1c\xd8\x07\x16\xe22\xf2\xd2m\xbcp\xfd\xce\x16W\xf4t\x0e\x9eQ-\xc7\xaa\xe8\xde\xde8T\xa8\xbe\xd2}@K\x99\xe0y\xe3r\xb9]\xd6:\x1d\xb0\x96\x91 \xab\x90\xc9\t\x8b\x05\xaf(J\'P\xb9\xc5g\xa4\xea\xb5\x00\x88\x06uT\x1b\xd11\xaa\x16Z\xd6\x8f\xb4\xbf\xfc/s\x1cj\xb4Z\xe7\x13\xeei\x13\xc2\x9c\x02#\x94\xfd\x16\xea\xd7\xaeE@4\x96\xbd\xa3\xdc\xd7wH\xda\xc2\xd0C\xdc\x1d\xdfEa\xd5\x87\x01\xb8L!\x96\xbc\xb8\x86\xb4mI\x0f\xff\xd3\xd5\xb3\xebgQ\xc5\xa5\xf4W\x8c)mV\x11K\x9f$\xb6\x92\xe2i\xfbE;\x1beV\xfa/g\xe8\xdf\xef\xff\x00I\xfaE\xcb\xe5}j\xea\x9fk\xf4Z\xefQ\xf44\x07&lt;\xb0\xd7\xb1\xae\xfd#\xab}W}&amp;\xd5\xff\x00O\xfc\x17\xa9\xfc\xe2&gt;\x17N\xc8\xbb\xa7\xbb9\x96=\xd8\xd6\xd4ok-\x0fs\xdbq{\xd9u\x1b\xabe\xd7\xe4z\xae\xd9eV\xecg\xa9m\xdf\xf1\x9e\xa3]\xf5o\x1f$\xd9\x90\xf65\xd51\xb2\xe7\xd4\\\x0e\xc9\xd3%\xbb\x99\xb5\xd5;\xf3\x1e\xd7\xfe\x96\xb7\xff\x006\xb3\xfe\xe9\x0e\xb1\xb1\xfa"G\x8b\x86.\xb42\xc6\x12\xd8]\xfa\x88\x1f1\xfe\xf3k\xaf\xe4\xe7\x8e\xaa\x06K\x9a\xfb\x0e#j\x19f\xb7Sk\xa9&gt;\xa5\xb6oe\x9f\x9f\xb9\xdf\xa3\xff\x00\x83\xff\x00\x84\xf5V\r\xf98\xd9\xef\xc5\xab3$\xd7\x8e\\+6\xb5\xa0lg\xe7\xdbq\x1b\xb7\xecj\xd6\xea\r\x19\x1d6\xecJ\x8f\xad\x95\x8f[\x0e0\x0e\x05\xcdk\x1b/\xabqv\xfbY}~\xdc\x7f[\xfe\xe3\xff\x00\x80\xb7\xf4+\x96\xc6mY\x03s\x1e[{\x994\xbc\x8d\xc0\x00C\\\xd70~\xf7\xd0z0\xc6\x01\xfe\xe1\xe1\xee|\x17J`\x00\x04EHq~\xe8\xfe\xb7\xf5]\x9a\xfa^\x03-\xc8\xaf\xa4=\xd94\xb0\x97ae\xb0\xee&gt;\xc8\xddu\xb5\xfb}\xbb\xf7"\xe0c\xfe\xcf\xc9s/\xcb\xb2\xdc\x9c\x9d\xd6:ImR~\x97\xab\xfb\xfbkX\x16V\xec|:\xf2q\xcd\xacv\xe2\xc7\xd6\xd2Z\x19\xfb\xfboo\xe6?\xfd\x12&amp;E\xd9x\x99m.s\xde\\\xd9m\xce$\x9d\xa4~\x92\xb2\xdd}\xa9\xc4H\x82\x04\xb7\xbf\xefzV\xc6Q\x8d\x1e\x1f\x96\x81\xaf\x97\xd4\xda\xeay\xf9x\xd7\xb2\x9cg\x91Xs\xcd\x15\xb2y\x004\xdc\xdd\xbfM\xae\xfeR\xa0\xdc\xf7\xfa\xcd\xb2\xfb^^\xd7\xb4\xde\xf7\xb7B\xe0[`kY\xbb\xdf\xb1\xf5\xb3\x7f\xb7\xf4\xca\xcdxw\xd9\x95ne\xafm4\xb3s~\xd3k\x87\xa7\xb9\xad\xad\xfe\xf6\xb7\xdc\xff\x00S}n\xa6\xaa\xfd\xff\x00\xa3\xff\x00\x83MNF#\xb6\xbc9\xce.\xb7\xd3\xa5\xd54\xd6\xe7\xb8\r\xcf{u\xfd\x1f\xb9\xfbk\xda\xff\x00\xf0\x95\xff\x00\xc2V\x9d\x03\x1b\xd0\x0f\x12&lt;Ve\xe2\xadI\xab\xa1\x13\xd7\x87\xd2\xdd\xfa\xb2\x1b\x8f\xf5\xa3\x1e\xee\xa2\xefE\xad\xf5,m\x96\r\xad}\x964\x8a\xdd\xbd\xc3cw2\xdbn\xadu]{\xeb\xd8\x00\xe0}_\x0e\xb2\xeb+\xf4\xee\xca\x00\x88\x1cT\xec-\xfb7[\xe9\xfa\x9e\x9d\xde\xf6z\x7f\xa5\xad\x8f\\&amp;~U\xad8\xf9ni\xb2\xd6]\xb9\xccq\xdc\xd7\xfd\x076\xa2\x1b\xf9\x9b\x96\x9b\xfe\xc3y\xaa\xec{\x1c\xebLY\x92\xeb\xc1\xde\xc3\x00?{\x836\xfe\xae\xe6\xba\xafg\xa7\xbf\xfc\x13?\x9bQ\xe4\x889\x06Cdp\x98\xff\x00W\xd3\xeaV,@\xfaO\xcc*^q\x93\xab\xd2\xf2\xfa\xc6\x10\xbb\xa8\xd3\xd4\xee\xc9\xc6\xc5f\xf7b&gt;\xd7\x07\x0b\x0b\x9a+\xa5\xdfh{\xea\xb9\x963w\xa3}{\xeb\xbb#\xf4/\xc7\xa7\xd4\xadefat\x8c\x9cKz\xfe]\x194\xdf\x9b\x9fec\x1d\xaf\xd8\xf8,fK\xf2=K\xd8\xefR\xcd\xcf\xb2\xcb\xbd\x9e\x97\xab\xe9\xd5_\xa7_\xe9\x13\xe7\xe7\xdb\xea?\x13\x06\xc6}\x8e\xea\xdc\xc3\x90\xf0[ac\xb6^\xe7X\xdfcl\xb2\xab\x06\xcc;\x7f\xc1\xfe\xe7\xa8\xaeu\xd7e\xd9\x85]!\xcf\xcb\xc6\xa2\xc0\xeb\xdf!\xee\xb2\xd7\x11]\x0e\xfa/\xc9\xb3\xe9\xe5z{6U\xf9\x9f\xce\xd9\xfaU\t\xf0\x90\x08\x1e\xbb:zO\xd5\x93&amp;(\xcb\x8aQ\xfd\n\x06\xc7\x13\xad\xf5G30\xb4U\xeb7\'\x11\xc1\xdb}F\x86\xdc\x00\xf7h\xf6;\xd3\xb5\xff\x00\xf0K\xaa\xce\xcd\xe9\xe3\n\xbb\xefg\xda1\xe8{\x1dY\x9d\xaed\x83W\xa8\xdb\'o\xd1{\xea\xf7=q\x9fU\xf3\xb2:s\xa9\xc7\xcd\xa3&amp;\xac\x1b\x0b\xeds,\xa9\xa5\xcc\xb0\xb5\x9bl\r\x8f[\xe8\xb5\x8f\xf6\xff\x009]v\xff\x009\xfc\xda\xe8p\xfa\x86;\x9e\xe3U.c\xef\xb0\x17X\x1a\x1a\xc2\xe7\x9d\xb5\xda_f\xca\xfd[v\xfb\xff\x00\xd1\xd9[\xe9\xb1\xfe\xa2~&lt;\x18\xc9\xe3\x02\xa5}&gt;Yy\xc7\xf7Xs\xf1\tV\xe2\x81\xed\xbf\x8b\xa3\x83\x97\x95\x8d\x8d^&gt;U\x876_ck\xbf\x8b_\\\xb5\xccs\xbdM\xbb\xed\xf4\xdf\xf4\x7f\xd1\xd7\xea+\xb0\xfb\xe9\x07\x1d\xe7x\x125\x82\x0fz\xedf\x9f\xf5+\x01\xcc\xdd\x98\xdb\xb1\xc9\xc7\xc7\xc5\xc9\x14\xe5Y;\x05\xb4\x90^\xfbq\xe9\xb1\xa6\xacjq\xf2\xecg\xa5\xb1\xbe\xfa\xfdo\xd3\x7f\x83Z\x14[n;Yack\xb9\x93;\t-&amp;xk\xb6\xd7\xb9\xb6\x7f\xc5\xa8\xb2\x03\t\x13w\x13\xfa#\xe6\x88\xf0A\x02B\xea\xa4~\xce/$\xcc\xbb\xaa\x7f\xa3\xb2&lt;\xb5Fc\xf3\xdc=\xec\xb4\xcfo\x0f\xb9]\xc6\xbd\x96\xb9\xf5\xb4\x16\xba\xa3\x0fa\xfc\xd2F\xefi\xfc\xf6\x7f)X\x98\xf1V1\xe1\x8c\xe2$\'-\x7f\x91kO!\x8c\x881\rJ\r\xe0{\x9a\xff\x00\xc5\x1e\xa7=\xce\x87\xd6\xe0\xd1\xa8%Kx\xdd\x1b\x8ar\xedc\x7f\xc1H0\x81^\xa3\xa3\x19\x9d\xf4\x0f\xff\xd4\xc5\xea\x96c\xd9\x87\x88\xfa\x1f\x93fu5zX\xf7\x07m\xf6\x92\xeb&gt;\xc9\x90\xea\x9d\xe9\xb2\xed\xa6\xcf\xd23\xfe\xbb\xfe\x8dZ\xe8}s\x15\x98\xb5\xf4\x81Cj\xce%\xccu6m\xad\x97\x1d\xa2\xa6[\x8d\x97cn\xae\x8c\xbb\xbd*\xf1};\x1a\xfc/\xfbQ\xea\xff\x00\x81E\xc4\xc7\xcd\xcc\xc7\xab+"\xa6\xfav\xb7uu\xb8\x17\x1a\xeb\xa8:\xda\xbd\xfbY\xea9\xb4\xfe\x8f\xfd-\xbb\xfdO\xd1QO\xe8\xa7\xd6q1\xba\x96;\xe8\xba\xe6;\x1b\t\xb5\xb5\xd9L\xf4\xf6\xb6\xd2\xd7;\xf4&gt;\x96\xdf\xf4{\x1f\xfe\x9b\x7f\xe8\xb1\xff\x00\xc2\xaa\x18\xf2\xf0zH5~u\xff\x00\xa0\xbb\x191q\xfa\x81\xd7\x7f?\xfd\r\x06?R\x15\xe4\xe5\xe1\xe7\\\xd3\x93H-\xc4kj\xda\xc2\xcd}jAo\xac\xf7\xd5\xea}\x0f\xfbY\xeaS\x93\xeb}\x04N\xaf\xd2\xb1\xae\xba\xac\x9cqgO\xbe\xa6\xee\xb1\xd4\x0fn\xd7\x06\xbd\xfb\xa8g\xb7}\xb6\xbf\xfaEo\xff\x00\xad\xbf\xf30okm\xcde\x19\xf9b\xd3mt\xbe\xdb\xdd\\\xdcA\x9d\x8c.\x8bl\xaf7\xd3\xd9\xff\x00\x86\x7fG\xebo\xb1k\x0e\xa9V5\x9e\x9b[\x94i\x13v5y5\xb6\x8b\xf6\xbbn\xfaol\xfa\x0e\xa9\xce\xaf\xd7\xaf\xd2\xfd\x1f\xfc_\xa9\xe9\xa5\x97YFP\xd0\xd7\xf8\xdf\xba\xb6#\xd3,r\xf1\xe1\xfe\xa9\xfd&amp;\xce#\xab\xcc\xc3\xb7\xa1[\xd2n\xc9\xcb\xbf\xd9]\xa4\x9ak\xad\xee\xd5\x996=\xa3n\xc6\x7f8\xf7,\x8b\xfe\xaf\xf5Zn\xb5\x97\xd9]\xcd\xe9Gu\xafc\x81e\xa1\x81\xafsYc\xb6\xbbg\xa7\xed\xb3\xfe\xdb]?T\xcf\xc4\xea\x14\xb7\x0f#\xd4\xc7.`\x00\xb0\x8a\xeb;\xa3s\x1eZ\xe6\xbf\xd5\xaf\xe9l\xd9\xff\x00\x06\xa97+\xa2tL\x07\x0clgd5\xa7\xd1\xb4\xda\xf3\xec\x0e\xf72\xcbj-w\xa9\x8fk\xbf\xd1lQG$\xabA\xea&amp;\xe8\xfa\xbc\xd8\xb0\xe3\xd2F\xc8\x1bi\xfb\xdf\xf4\\\xbc\\\x82\xea\x9a\xf8\x04\x9d\xd2\xcd\x8dw\xa4\xd7\x06\xfa\x9e\x9dV\x87~f\xcb\xb7\xd7\xe9Z\xcf\xe6)X\xb2k\xba\xdaH\x0en;G\xa2a\xa46\xb6\xee\xb7w\xee\xfb\xdc\xff\x00Q\xdf\xce~\x9a\xc5j\xdc\xa7c\xd1\x8aq\x8f\xabm\xf5\xb9\x99x\xbb\xa1\xcd\xb3\x1c\x9a\xeb\xc8\x83\xfe\x93\x1d\xb4[\xb9\xcd\xfez\xa7\xaa\x9d;\x1c\xe56\xdb\xfd\x1f\xb4\xb8\x80\xe6\xb3\x90Oq\xe9\xcf\xef~\x92\xdb^\xf6zjx\x8a\x04\x9d\xb6\xfa\xf12\xca|F _\x10\xbe/\xee\xf0\xff\x00\xcen\x86dXj%\xac~9\x9b\x19c\xc9c\x9dkv\xeeu\x9bw\xee\xf4\xb7zu\xd4\xcf\xfbiS\xbd\x8c\xab\xa8[\xa9m65\xa4\xb2&amp;]&gt;\xfd\xcf\xfa\x0c\xdb\xfaO\xf8\xc4LL\x97ae\xd0\xc7d\x8fW \r\xcf\xb1\xdb\x9bV\xe3\xb7\xdd\xb3\xd5\xb6\xa7\xfa\x7f\xa1\x7f\xaa\xcf\xf0\x9e\xa2\xbf\xf6\x8cl\xdc,lLJ\xdf\xbe\xc3\xbb5\xde\x99\xb4\xb6\xc9\xb1\xbe\xe6\xb3\xf7\x1a\xda\xebf\xd7\xa5f\'k\x89\xfd/\xfb\xaf\xf9\xa9\x15:\x00\xfa\x81\xd6=v\xf9\x7f\xe7\xb5\xeb\xf4\xaa\xe9\xd9\x17R\xcfN\x9b\\\xcfQ\xfb\xbfJ\xe6\x92Z&gt;\xcf[\x0b}/~\xe6^\xc7\xd9\xec\xab\xf9\xba\xd6\xb7\xd5\xdb\xb2p\xebpmt\xb1\xae\x8fS&gt;\xe7\xdc\xc1Mu\xc3\xdc\xf7\x8cr\xd6\xdb[\x9c}J\xab\xdfG\xf3\x1f\xe9UZ\xf0\x9b\x81\x8bV@\xb1\x8ee\xf7zY\x14\xda\x03\xebi\x80kg.\xdb\x90\xcf\xd2\xfa\x9e\x93\xff\x003\xf4\xdf\xcd\xfe\x93/\xa8R\xe6c\xb3\x15\x99&gt;\xb5V]`\xad\xae3\xb5\x95\xce\xdbv\xea\xd6li\xff\x00\xcf\xbe\x9aeqX\xbd\t\xdc\xf6]"`.\xa8\x88\xd5GJ\x95\xff\x00\xdd6\xdd\xf5\x9b\xeb/Q\xeb\x18\xd7;3\xd4\x1e\xaf\xea\xad\xac\n*&gt;\xfd\x8d}\x8c\xda\xd6\xfe\x92v\xba\xdc\x8fY\xf5\xd7b\xf4\n~\xcf{*\x17X\xfcg5\xce\xa5\xae\xa9\xdbY\xb0\x87\xb7\xd3s.o\xd0\xc4{\xedg\xd9\xdf\xb3\xf4t~\x92\x9b\xab\xfd\x02\xe0\x19\xd1\xf0\xeb\xe9vfY\x92mn;_\xe9\x1a\xf75\xf26\x8a\xf2\x19E\xa1\x96}\x92\xcb\xed\xf4m\xb3\xf7\xeb\xbe\xbf\xd1zj\xf7@\xfa\xc5\xea\xf4\xf6\xf4\xd7\xd1fnCI\x18\xf5K\x9f\xfa\'7m\xb4\x16\xed\xdb\xe8\xd1^\xfd\x966\xea\xfd\x06zV\xd5_\xa9_\xe9lBQ\xa3Z\x08\xe9\xb3P\xc3a`\x93\xd8\xdf\x0fw\xa154dVs\x18\xe7\xdf\x86m\xb3\n\x9b\\Ht\x0f\xd5\xf0}+\x8e\xe7\xfd\x93\xf5\x8a,\x7f\xe9\x7f\xc1\xff\x00\xa3\xf4k\xd8n[\xadkq\xdc\xc1K\xec\x1b\xeb\xf7\x0e#\xf4\x8d\xdbg\xbf\xf4Ow\xbe\xbf\xfa\xea\xe6\xf2z\xdemL\xe9\xf9\x18\x16]V\r\x8c!\xac\xb2-5\xb6\xa2=+\x1f\x92\xf0\xfb\xaek\xdc\xff\x00\xd3\xb3\xd3\xb2\x8cv\x7fG\xff\x00\x07j\xdc\xe9\xd9n\xea\xd8\xff\x00\xb5E\x0c\xab\xd4\x874\x89qa\xb3\xdd\x92\xed\x8f\xfa,\xb6\xf6\xfeg\xf6\xfd7\xfe\x89S\x9d\x10\r\x9dt?\xf3\x9bs\x1e\x9b\x94G\xa7mu\x8c\xbf\xee\x9d\xbc3hy5\x1d\xf6\xec,\xd8\xe2F\xe2?\xd7\xe9"?\xf6\xf3\xbe\x8b*h\xed\xa9+/\'\xab[\xd3\xd9U\xb8\xedk\xf2\t\xf6\xd7d\x81\xb3\xfc6\xbfK\xdf\xf9\x8bo\xa4u\xcc\x0e\xac\xd2)&gt;\x9eK\x04\xd9\x8e\xf27\x0f\xe57\xfd%\x7f\xcbb\xb7\xca\x0fA\xd7C"G\xd8\xe6\xe7\xf9\x86\x9d\x1a\xed\xaf\xaf\xe9\xbcS\xe7\x04\xa3\xb6\xbe\xaat"\xbf\xbc\xad0\xd0\xa5\n\xc5x\xb0\xdb\xff\xd5\xa1\xf5S\xadS\xd3:q\xc6\xbd\xd7;{\x85\xd3\x04\xbc\x07\xed\r\xf6}\x0f\xe6kc\xbf\x9d\xfd\x1f\xa9\xb3\xf4\x9e\x9a\xd4\xb37\xa3f\x8a\xed\xde\xd6;\x12\rx\xcdg\xa4m\r\x1f\xa3nd7\xd3uT\xbb\xf9\xbf}^\x8b7\xff\x009\xea~\x8b\x1e\x9f\xa9\xbdN\xf7z\x87\x06\xc7Q\x90=\xb5\xbe\xc6\xb2\xd65\xa0zM~G\xa7\xe8\xb9\x8fw\xa9o\xf4\x7f\xe6Y\xfe\x9a\xc5\xb3g\xd4\xaa\xaa\xc5\x8f\xd1\xe4R\x01\x91y;\xdf\xac\xb7\xd5u%\x94V\xca\xbfu\x8c\xff\x00\x8d\xb7\xfc\x1a\xcb\xcb\xc3fW\xbd\xddk\xa7\xe9:\xf8\xf3GAD\x1a\xd0\xed\xea\x8f\xa4q\xb5z\xc7H\xf5\xb2\xf0\xaf}w\xb9\xb8n8\xf8\xf8-\xaaN\xea\xcf\xda\xdcz\x8e\x7f\xaa\xdb\xed\xb7\xa8^\xff\x00S\xf4\r\xfdS\xd7\xff\x00\xb7\xe1\xd6\xfe\xaf\xdd\xe91\xb6\x91vm5\x97\xd3[\xc9m&gt;\xa1!\xd5\xe3\x9c{K[\xeb\xd8\xdfW\xdf\xfc\xdd\xbf\xa2\xb6\xcf\xf0\x8bs\x17\xa7\xf4\xecFV\x05vb\xba\xa8\x1b1\xad\xb1\x93`o\xa3\xeb\xfe\xf3\xf6c\xfe\x8f\xf4\xdf\xf5\xba\xd5^\xb3f5\x1e\xa5\xd5\xd4\xca\xef\xb0\xee}\xa5\xde\xa1/\'W:\x7fE\xed\xfe\xae\xc6\x7f\x83M9\xec\x82\x08\x15\xa7\rz\xbf\xe6\xfaZ\xf0\xc0o\xd6dn\xcf\x10=\xde\x03;+*\xbc\xa0\xcc\xbb\x1bnEm`61\xe1\xcd\x027lk[\xfc\xd7\xfc\'\xf9\xebs\xea\xe5y\x9dK\x1f2\xca\xf2\xf0\xe9\xb2\xbfN\xa6\xb7*\xc7\xb2\xd6\x83\xba\xcfZ\x9b*\x0e\xfd\x1e\xf3\xb7\xd3\xb5\x96Uu\x9f\xf8.\x07Tv\x1eVk\xb2-.\x06\x05{\x19\r\x1e\xc1\xb2\xbfw\xf2k\xda\xd5:-\xc5k=?ki\xb5\xb0\xea\xa9&gt;\xf0G\xd0s\xb7\xfb^\xf5f@\x18\x02\x06\xb4/M\x11\x11!\xc5\x0b\xa1zk\xa9{,L&lt;~\x8a\xda\xfa}\xe6\x9c\xafZ\xc7:\xc7\x91\x1b\xe1\xa3\xd7\xa7\x19\xd9\x1f\xcc\xfe\x83eY&gt;\x96\xcb2j\xff\x00\x84X}g\xa7\xb3\xa4\xf5&lt;\xac\x91[Y\x85e\xa5\xf8\xaeh\xf5)eV\x1fU\x95Z*\xfej\xdf\x7f\xb6\xbb?\xed\xd4\xef\xeaV7"\x8b\xaa\xb6\xca~\xcd\x15\xe4f\xb2\\\xf1IsY\xfa\xbbli\xfdb\xca\xff\x00\xa4~\x8a\xd5\xd2&gt;\xa6b2\x8c\xdb\xde\xdc\xdc=\xadvVmL~F5\xd59\xc7\xed\x14d\xb1\xc5\xec\xc7\xb3\xd6\xaf\xd4nM\xb8\xff\x00\xa6\xfej\xdb\xe9Q\xc2\x13 \xcb\xe6$k\x1e\xbf\xbd\xe9\\\t\x8c\xe8zxw\x97Y\x12\xf0l\xfbOV\xea\xd8\xd8\xf8T\xee\xc8\xbd\xc0c\xb5\xcd\xd0\xb7\xdc\x0b\xdac{jmm\xb3\xfe/g\xe8\xd5\xfc;+\xb5\xd8\xd8\x95f:\x9a\x87\xbc\xd0\xed\xfe\x8d\x8d\x97:v\xd1\xed\xd8\xfd\xbe\xefS\xd5\xff\x00\xc0\x97S\x8bE\x9dZ\xd6\x9e\x85\x89N/N\xa8\xdc0\xafk\xb6\xbf\x1a\xd7o\xf4\xb2\xfe\xcc\xe9\xb7\xf4\xde\xcb\xa9f\xcf\xf4\xbe\x9f\xd9\xbfL\xb2\xef\xbb\xa7\x9e\xb7v]9\xdf`s\t\xcc\x18/\xc7/\x14=\xb5\xfe\xb2\xec\xcd\xbb\xfe\xcfm\xf9\x9b}\\Z\xbf\x9a\xfd&amp;\xff\x00G\xf4\x16)\'\xb0\x15T4\xfd"?\xbd\xe9\x92\xd1\x9aX\xe4L\xfd\\Z\xe9\xff\x00\xa398\xbd&gt;\xce\xb3c\xe8\xa0\xbe\xdc\xba\xaa}\x98\xed\xde \x11\xab\xa3g\xb1\xd5{\x7f1\x9e\xfa\xff\x00Mj\xa3V\x16vcmeU\x8b\xb3(\x1e\x9d\xcdi \x86\x97\xd7^\xc7=\xfe\xdfU\xae{\x99\xf4\xff\x00\x9a\xf5W\xa5\xfdT\xea=\x0f\xab\xd5\x93f;\xac\xc3\xea6\xd6+\xc8?\xa2m\xd6&lt;0z\xf9\x98\xd4\xd3^\xdd\xde\xe7\xfe\x87\xec\xfe\x9f\xf3w}\x9e\xbb^\xb2\xfaS\xfa0\xea6\x9e\x87\xd3\x1f\xf6\x1a\x06\xdc\xdc\xbc\x87Zm\xb6\xc2\xe2\xdfe6\x1d\xf5\xd8\xfb\x9b\xb3\x7f\xd9\xec\xff\x00G\x93N5I\x9e\xe4\xa2\r\rlP?,\x7f\xab/\xfb\xd5\xa77\x19\xd4\x18\xc6\xbdF&gt;\xa9K\xfa\xd7/\xd2y\xe1_\xec|\x8c\xda\xfa\xe6=\x97\x1b\x1a\xe6e\xb2\xa2\xcd\xcdu\xdb,\xf5+\xde\x7fW\xb3\xd4{/\xa7#\x1f\xed\x14\xdf\xe9z\x7fe\xf4\xadG\xc5\xe9\x94t\x90\xeb*.\xcf\xc3\xcb\xb1\xb54\xb49\xc5\xf5\x11\xea\xb5\xd5\xbb\r\xcev\xdd}\x1b\x9bm_\xd2j\xf5=Jl\xa5v\xbdW\xa1?\xa8\xf4\xab:{\xea\xbf?6\xc8}7\xe4\x10\xda\xab\xb0\xee\xae\xbb\xbdF\x1fI\x9e\x95O\xb5\xd6W\x8d\xeb~\xe7\xa2\xa9\xd5\xf5\x13\xa5b\xd5Sz\x96V\xea\xfd#W\xd9\xf1\x83\xa6\xd77\xe8\xdbU\x8e\x975\xf5\xfa\x8f\xf5\x9bS=7\xff\x00\x84\xf4\xeb\xa1\x0e-=^\x9b&gt;\xaa\xd8\xd2\xccS\x94f\x08\xb3\xad\xeb\xe2\xd3\xfa\xbb~=\xb8\xcf\xb6\xbb,\xcb\xba\x8a\xfdg\xb2\xe7z~\xda\x9bf5\x97\xd7\xb8[\xb5\xae\xa7#f[7Z\xcd\xf5\xd1\xfe\x15W\xeb]^\xff\x00\xab\xbd\x17\x13+\xa1\xb2\x97U\x93\x97\x91\xbf#]\xady\x1b\xe8cq\xb75\x8e\xad\xd8\xae\xff\x00\x07]T\xff\x00\xa4\xaf\xf4\x9f\xa4\xb5\x81\xf5`Q\x99V^;\xb2)\xc2\xc7\x02\xb7Y\x93k_c\xbd\xf3\xe8\xb5\xae\xfb-L\xc5\xd1\x8c\xc8\xab\xf4\xb5YW\xf3_\xa4X?\\\xfafS\xd9\x81\x81\xd2z}\x96\xb2\x86\xbe\xec\xbf\xb0\xb2\xfbh\xf5\xac\xdb_\xe8\xc5\x9e\xa7\xa7[j\xab\xf4U\xfe\x8fc?3\xd3C\x19\xc6rF\x07m\xeaC\x87F\xe71\x90\x9cr\x94I\xb3\xbd\x1b\xfe\xaf\x0f\xf7R\xe2u\xab:\xae9}\x96;\xed \r\xe4\x1d\xa7O\xdd\xff\x00\xc8+\x18\xf9\x175\xed\xb1\x8e\xf4r*2\xdb\x98L\x83\xfb\xedp\xff\x00\xa9\\N\x1eM\xb8\xd7\x076Z\xf6\x1dA\xd0\x82&gt;\x93\\\x17Y\x85\x93^UB\xea\xce\xd3\xc3\xc7\x81W\xb6\xd3\xecho\xaf\xda\xfaO\xd5\xaf\xac\x83\xa9\xb0b\xe5\x81_P\xad\xb2\xe04\x164\x7f\x85\xaf\xf9_\xe9+[\xcb\xca\xa8\xc8\xb2\x822\x98\xed\x96\xb1\xc1\xf5\xbc\x90\x08x\xfc\xf6O\xfd*\xd7\xa3\xf4^\xa7_T\xe9\xf5\xe56\x03\xcf\xb6\xd6\xb7\x81`\xfaa\xbf\xc9\xfc\xf6\x7f!:&amp;\xd8\xe5\x1a\x7f\xff\xd6\xdc\xa6\xe6\xd6\x1a\xe1ie|\x1d\xa6I\xe3s\x1b\xa3\xbd\xdf\xd7Qfv[v;\xd1\xd9\xbd\xc6\x1a\xfb=W\xb7S\xb5\xde\xa6\xe6\xee\xf7m\xb3\xe9.\x1b\xa5u\xdc\xcc\xfe\xa5N%.o\xbfW\x990\xd64n{\xff\x00\x94\xef\xdcb\xed_S\x1f\x83o\xe8\x9c\xe2\xd0C=2M\xafh\x1fN\xa8\xf7\xfa\x9b\x7f\xc1~z\xc2\x9c\x0e"#-\xce\xba:\xf1\xa9\x83!D]YE\x99\x9c+\x96\xb5\xe3\xd6x\x879\xaek\x88\x07\xe8\xb7t~\x8f\xf7\xdd\xe9\xaeO\xeb\x07T\xc5\xa7\x1d\xcc\x0f\x16\xe5&gt;[[{\x01\xfe\x91\xd1-\xff\x00\x84X\xb7}c\xce\xb6\xd0\xeakk\xaa\x01\xc1\xa2\xd9t\x83-\xde\xf60\xb2\xbd\xcd\xfa[&gt;\x82\xce\x18\xb9\x96\xef\xb8\xb1\xf6\x00\xd3c\xdf\x13\ri\xf79\xdf\xbb\xb1^\xc5\xcap\x91)\x91\xa7F\xb6NcC\x18\x03\xfd\xe5\x03\']O\x9e\xa9\xc1\x87H\x1a\xf8\xa4\xda\xdc\x07\xbbO\x8ax\xda\xad\x9ak\x8bt0\xb2\xebk\x83\x9c\x1d\xb8\x08\x86\x9d\xa4\xc8\xf8?\xfe\xa5ka\xe7\x0c{\x86N+\xcd9-\xe2\xc6&lt;\x87\x11\xce\xd7\xed\xfeu\xbb[\xb6\xd6?{\x1f\xfe\x11r\xa6\xe2\xd7KD\xc7#\xbc|U\x9a:\x83[\xa0v\xc7\x13;\x9c\x04\xea6\xfe|\xb3n\xd5\x04\xf0\x9b\xb8\xdbg\x1f1\x12*OQ\x8f\x97\x93\x8f\x96\xfe\xa1\x87\x94\xfc\x1c\xbb\x01\xad\xb6T\xd69\xa6\xbd\xb0*u\x0e\xfd[e{}\x94\xb1\x95\xfa\x7f\xe0=/\xcc\xb5\xd5&gt;\xc3\xd5\xb3\x1d\x9b}vS\x9b\x91Ut\xe5\x8cc\xe9\xb5\xd6TC\x9b\x91\xb2\xefW\xd4\xdc\xfd\x8c~5\xdf\xf7\x1e\xaf\xe7\x7f\x9e\\\xe5\x1dM\xcdc\x9b[\xab\xb1\xae2$m \x8f\xea\xff\x00YX\xa7\xaa8p\xd7\x066=\xae\xf7\x81\xdb\x9f\xdd\xff\x00\xce\x142\x8e^\x9foVA\x1c\x12:\x80~\xafE\x89\xebb\xb5\xac\xa3:\xcan`\x02i\xc6\xa4\x19\x1b\xc6\xc6?\x7f\xb2\xab}G\xfa\xccg\xf8O\xd23\xf9\xb5\xb5\x89\xd7\xbaF s\xb1:}^\xa9s\x9fs\xac\xb7\xf4\xef\'\xf4\xb6Xo\xbd\x97[\x91\xfaow\xe9\xef\xb7\xd2b\xe41\xba\xa7N\x86\xd7\x94\x0b\xabp\xdb\xb8\x12\x04\x88n\xaf\xf6\xbb\xfa\xca\xd5y\xf8\x14\xb9\xa0\x96\xba\xb0\xd2\x1a4i\x00}\x06\x87G\xee\xff\x006\xf5\x01\xf7z\xd9\xff\x00\x042\x8c8\x06\xc3\xfes\xd9\xe7}`\xce\xba\xc66\xb3]A\x8d\x07.\xad\xcf\xb2C\xf6\xfa\x8d\xa1\xf8\xcde\xde\xa5N\xfd\x1d[}/N\xcf\xd3]\xea!Q\xd5\xaa\xb1\xed\xaf\x1a\x9a\xa9\xbc9\xcc5\x1dla\x8fO~\xebZ\xdf{\xdb\xfc\xe5[\x17%\x8d\xf5\x9d\xb8\xf0+\xb3O\xa6\x0e\xe3\xba$\xc4Y\xecf\xf5.\xa5\xd7\xb0\xad\xae\x9br\xb2k\xa2\xc6\x03\xb5\xe5\xa6\xdb\\\xc1\xda\x9aX[\xbbs\xdd\xfe\x12\xeak\xfes\xfc\x1ai\x8ei\x1a\xf5\\\xba\x8d\xd5\xc1\x8a#Q\x1a\x8f_\xeczw\xf5\x9av\xddfl\xbb\xd2i\x02\xd78\xb9\xa0\xc7\xb8\xd7\xf4k\xdb\xa3\xbf\xaf\xff\x00o1\x03\xea\xf7\xd7\xbe\x82\xe6\xbb\t\xd7\x0e\x9f\x90\xcb\x1e\xe0_\xfc\xdd\xed\'\xf4V:\xc6\x81\xe9\xdc\xea\xc5\x7f\x9b\xfa5\xe7\xf9\xfdm\xfd@6\xa6\x07\xfa\x12\x0e\xebH\xde\xe2\'\x8a\xea\xfd\x1dt\x7f\xc1\xfe\x92\xcd\xff\x00\xe1\xbf\xc1\xaa\xff\x00b\xa2\xd2E\xa0\x12yr\xb1\x87\x95\xe1\x04\xcaDL\xed_\xa3\xe7\xfb\xcc\x19sFG\x861\xb8u\xd7\xfe\x8f\xee\xb6z\xf0\xeaO\xeb\xb9Y\x1d^\xa66\xec\xd2,m\x94\x90jph\x0c\x0f\xc7\xb1\x92\xd7\xfbv\xef\xfc\xff\x00\xf4\x88X\x19O\xc1\xbfp\xf7Vtx\xf1\x03O\xa2UW\xe2\nXv\xcb^\xdd\x0c\x99?\x97\xe89\t\x97\xbfw\xbb\x91\xe2\xad\x88\x9a\x02\xee\x85\x7f/\x99\xaftok6\x1e\xd2\xb7V\xe0\x1e\xc8,p\xde\xdf\x03!t\xff\x00Rz\x83\xaa\xeaO\xc3tl\xc9a1:\xfa\x8c\xf7\xb4\xff\x00j\xbfY\xbf\xd8\\\x1fA\xcdi\xfd^I.3[\x0e\xbe\xe3\xf9\xad\xfe\xb2\xe9:=\xa6\x9e\xb1\x85dm-\xc8\xac'... (set the log level to DEBUG or TRACE to see the full content) 
+ </msg>
+<msg timestamp="20200722 21:45:53.754" level="INFO">POST Response : url=http://ninjachef-api-qaninja-io.umbler.net/products 
+ status=200, reason=OK 
+ body={"_id":"5f18dbbf42f1f60016038a09","user":"5f1744fc42f1f60016038846","thumbnail":"thumbnail-1595464637739","name":"Carne de Jaca Louca","plate":"Tipo","price":20,"__v":0,"thumbnail_url":"http://ninjachef-api-qaninja-io.umbler.net/files/thumbnail-1595464637739","id":"5f18dbbf42f1f60016038a09"} 
+ </msg>
+<msg timestamp="20200722 21:45:53.754" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20200722 21:45:52.000" endtime="20200722 21:45:53.754"></status>
+</kw>
+<kw name="Status Should Be" library="RequestsLibrary">
+<doc>Fails if response status code is different than the expected.</doc>
+<arguments>
+<arg>200</arg>
+<arg>${resp}</arg>
+</arguments>
+<status status="PASS" starttime="20200722 21:45:53.754" endtime="20200722 21:45:53.754"></status>
+</kw>
+<kw name="Convert To String" library="BuiltIn">
+<doc>Converts the given item to a Unicode string.</doc>
+<arguments>
+<arg>${resp.json()['_id']}</arg>
+</arguments>
+<assign>
+<var>${produto_id}</var>
+</assign>
+<msg timestamp="20200722 21:45:53.755" level="INFO">${produto_id} = 5f18dbbf42f1f60016038a09</msg>
+<status status="PASS" starttime="20200722 21:45:53.754" endtime="20200722 21:45:53.755"></status>
+</kw>
+<kw name="Set Test Variable" library="BuiltIn">
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<arguments>
+<arg>${produto_id}</arg>
+</arguments>
+<msg timestamp="20200722 21:45:53.755" level="INFO">${produto_id} = 5f18dbbf42f1f60016038a09</msg>
+<status status="PASS" starttime="20200722 21:45:53.755" endtime="20200722 21:45:53.755"></status>
 </kw>
 <kw name="Go To" library="SeleniumLibrary">
 <doc>Navigates the current browser window to the provided ``url``.</doc>
 <arguments>
 <arg>${base_url}</arg>
 </arguments>
-<msg timestamp="20200711 16:11:57.578" level="INFO">Opening url 'http://ninjachef-qaninja-io.umbler.net/'</msg>
-<status status="PASS" starttime="20200711 16:11:57.577" endtime="20200711 16:11:58.705"></status>
+<msg timestamp="20200722 21:45:53.755" level="INFO">Opening url 'http://ninjachef-qaninja-io.umbler.net/'</msg>
+<status status="PASS" starttime="20200722 21:45:53.755" endtime="20200722 21:45:56.114"></status>
 </kw>
 <kw name="Input Text" library="SeleniumLibrary">
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
 <arguments>
 <arg>${CAMPO_EMAIL}</arg>
-<arg>${email}</arg>
+<arg>${email_cozinheiro}</arg>
 </arguments>
-<msg timestamp="20200711 16:11:58.706" level="INFO">Typing text 'vanessaredes@yahoo.com.br' into text field 'id:email'.</msg>
-<status status="PASS" starttime="20200711 16:11:58.705" endtime="20200711 16:11:58.850"></status>
+<msg timestamp="20200722 21:45:56.114" level="INFO">Typing text 'eduguedes@gmail.com' into text field 'id:email'.</msg>
+<status status="PASS" starttime="20200722 21:45:56.114" endtime="20200722 21:45:56.243"></status>
 </kw>
 <kw name="Click Element" library="SeleniumLibrary">
 <doc>Click the element identified by ``locator``.</doc>
 <arguments>
 <arg>${BOTAO_ENTRAR}</arg>
 </arguments>
-<msg timestamp="20200711 16:11:58.850" level="INFO">Clicking element 'css:button[type=submit]'.</msg>
-<status status="PASS" starttime="20200711 16:11:58.850" endtime="20200711 16:11:58.889"></status>
+<msg timestamp="20200722 21:45:56.243" level="INFO">Clicking element 'css:button[type=submit]'.</msg>
+<status status="PASS" starttime="20200722 21:45:56.243" endtime="20200722 21:45:56.280"></status>
 </kw>
 <kw name="Wait Until Page Contains Element" library="SeleniumLibrary">
 <doc>Waits until the element ``locator`` appears on the current page.</doc>
 <arguments>
 <arg>${DASHBOARD}</arg>
 </arguments>
-<status status="PASS" starttime="20200711 16:11:58.890" endtime="20200711 16:11:59.327"></status>
+<status status="PASS" starttime="20200722 21:45:56.280" endtime="20200722 21:45:57.354"></status>
 </kw>
-<status status="PASS" starttime="20200711 16:11:54.442" endtime="20200711 16:11:59.327"></status>
+<status status="PASS" starttime="20200722 21:45:51.945" endtime="20200722 21:45:57.354"></status>
 </kw>
-<kw name="Dado que &quot;${nhoque}&quot; é um dos meus pratos" library="kws">
-<kw name="Set Test Variable" library="BuiltIn">
-<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<kw name="Quando o cliente solicita o preparo desse prato" library="kws">
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
 <arguments>
-<arg>${produto}</arg>
+<arg>Content-Type=application/json</arg>
+<arg>user_id=${token_cliente}</arg>
 </arguments>
-<msg timestamp="20200711 16:11:59.328" level="INFO">${produto} = {'nome': 'Nnhoque molho páprica', 'tipo': 'Massas', 'preco': '20.00', 'img': 'nhoque.jpg'}</msg>
-<status status="PASS" starttime="20200711 16:11:59.328" endtime="20200711 16:11:59.328"></status>
+<assign>
+<var>&amp;{headers}</var>
+</assign>
+<msg timestamp="20200722 21:45:57.355" level="INFO">&amp;{headers} = { Content-Type=application/json | user_id=5f1744fc42f1f60016038847 }</msg>
+<status status="PASS" starttime="20200722 21:45:57.355" endtime="20200722 21:45:57.355"></status>
 </kw>
-<status status="PASS" starttime="20200711 16:11:59.327" endtime="20200711 16:11:59.328"></status>
-</kw>
-<kw name="Quando faço o cadastro desse item" library="kws">
-<kw name="Wait Until Element Is Visible" library="SeleniumLibrary">
-<doc>Waits until the element ``locator`` is visible.</doc>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
 <arguments>
-<arg>${BOTAO_ADD}</arg>
-<arg>5</arg>
+<arg>payment=Dinheiro</arg>
 </arguments>
-<status status="PASS" starttime="20200711 16:11:59.329" endtime="20200711 16:11:59.561"></status>
+<assign>
+<var>&amp;{payload}</var>
+</assign>
+<msg timestamp="20200722 21:45:57.356" level="INFO">&amp;{payload} = { payment=Dinheiro }</msg>
+<status status="PASS" starttime="20200722 21:45:57.355" endtime="20200722 21:45:57.356"></status>
 </kw>
-<kw name="Click Element" library="SeleniumLibrary">
-<doc>Click the element identified by ``locator``.</doc>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
 <arguments>
-<arg>${BOTAO_ADD}</arg>
+<arg>api</arg>
+<arg>${api_url}</arg>
 </arguments>
-<msg timestamp="20200711 16:11:59.561" level="INFO">Clicking element 'class:btn-add'.</msg>
-<status status="PASS" starttime="20200711 16:11:59.561" endtime="20200711 16:11:59.632"></status>
+<msg timestamp="20200722 21:45:57.356" level="INFO">Creating Session using : alias=api, url=http://ninjachef-api-qaninja-io.umbler.net, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20200722 21:45:57.356" endtime="20200722 21:45:57.356"></status>
 </kw>
-<kw name="Choose File" library="SeleniumLibrary">
-<doc>Inputs the ``file_path`` into the file input field ``locator``.</doc>
+<kw name="Post Request" library="RequestsLibrary">
+<doc>Send a POST request on the session object found using the
+given `alias`</doc>
 <arguments>
-<arg>${CAMPO_FOTO}</arg>
-<arg>${EXECDIR}/resources/images/${produto['img']}</arg>
+<arg>api</arg>
+<arg>/products/${produto_id}/orders</arg>
+<arg>data=${payload}</arg>
+<arg>headers=${headers}</arg>
 </arguments>
-<msg timestamp="20200711 16:11:59.633" level="INFO">Sending C:\roboweek\ninjachef\resources\images\nhoque.jpg to browser.</msg>
-<status status="PASS" starttime="20200711 16:11:59.633" endtime="20200711 16:11:59.724"></status>
+<assign>
+<var>${resp}</var>
+</assign>
+<msg timestamp="20200722 21:45:57.932" level="INFO">POST Request : url=http://ninjachef-api-qaninja-io.umbler.net/products/5f18dbbf42f1f60016038a09/orders 
+ path_url=/products/5f18dbbf42f1f60016038a09/orders 
+ headers={'User-Agent': 'python-requests/2.23.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'user_id': '5f1744fc42f1f60016038847', 'Content-Length': '23'} 
+ body={"payment": "Dinheiro"} 
+ </msg>
+<msg timestamp="20200722 21:45:57.932" level="INFO">POST Response : url=http://ninjachef-api-qaninja-io.umbler.net/products/5f18dbbf42f1f60016038a09/orders 
+ status=200, reason=OK 
+ body={"_id":"5f18dbc342f1f60016038a0a","user":{"_id":"5f1744fc42f1f60016038847","email":"fernando@bol.com.br","__v":0},"product":{"_id":"5f18dbbf42f1f60016038a09","user":"5f1744fc42f1f60016038846","thumbnail":"thumbnail-1595464637739","name":"Carne de Jaca Louca","plate":"Tipo","price":20,"__v":0,"thumbnail_url":"http://ninjachef-api-qaninja-io.umbler.net/files/thumbnail-1595464637739","id":"5f18dbbf42f1f60016038a09"},"payment":"Dinheiro","__v":0} 
+ </msg>
+<msg timestamp="20200722 21:45:57.933" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20200722 21:45:57.356" endtime="20200722 21:45:57.933"></status>
 </kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<kw name="Status Should Be" library="RequestsLibrary">
+<doc>Fails if response status code is different than the expected.</doc>
 <arguments>
-<arg>${CAMPO_NOME}</arg>
-<arg>${produto['nome']}</arg>
+<arg>200</arg>
+<arg>${resp}</arg>
 </arguments>
-<msg timestamp="20200711 16:11:59.725" level="INFO">Typing text 'Nnhoque molho páprica' into text field 'id:name'.</msg>
-<status status="PASS" starttime="20200711 16:11:59.724" endtime="20200711 16:11:59.840"></status>
+<status status="PASS" starttime="20200722 21:45:57.934" endtime="20200722 21:45:57.935"></status>
 </kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" starttime="20200722 21:45:57.354" endtime="20200722 21:45:57.935"></status>
+</kw>
+<kw name="Então devo receber uma notificação de pedido desse produto" library="kws">
+<kw name="Convert To String" library="BuiltIn">
+<doc>Converts the given item to a Unicode string.</doc>
 <arguments>
-<arg>${CAMPO_TIPO}</arg>
-<arg>${produto['tipo']}</arg>
+<arg>${email_cliente} está solicitando o preparo do seguinte prato: ${produto}.</arg>
 </arguments>
-<msg timestamp="20200711 16:11:59.841" level="INFO">Typing text 'Massas' into text field 'id:plate'.</msg>
-<status status="PASS" starttime="20200711 16:11:59.840" endtime="20200711 16:11:59.913"></status>
+<assign>
+<var>${mensagem_esperada}</var>
+</assign>
+<msg timestamp="20200722 21:45:57.940" level="INFO">${mensagem_esperada} = fernando@bol.com.br está solicitando o preparo do seguinte prato: Carne de Jaca Louca.</msg>
+<status status="PASS" starttime="20200722 21:45:57.939" endtime="20200722 21:45:57.940"></status>
 </kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<kw name="Wait Until Page Contains" library="SeleniumLibrary">
+<doc>Waits until ``text`` appears on the current page.</doc>
 <arguments>
-<arg>${CAMPO_PRICE}</arg>
-<arg>${produto['preco']}</arg>
+<arg>${mensagem_esperada}</arg>
+<arg>15</arg>
 </arguments>
-<msg timestamp="20200711 16:11:59.914" level="INFO">Typing text '20.00' into text field 'id:price'.</msg>
-<status status="PASS" starttime="20200711 16:11:59.913" endtime="20200711 16:11:59.993"></status>
+<status status="PASS" starttime="20200722 21:45:57.940" endtime="20200722 21:45:57.968"></status>
 </kw>
-<kw name="Click Element" library="SeleniumLibrary">
-<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" starttime="20200722 21:45:57.937" endtime="20200722 21:45:57.968"></status>
+</kw>
+<kw name="E posso aceitar ou rejeitar esse pedido" library="kws">
+<kw name="Wait Until Page Contains" library="SeleniumLibrary">
+<doc>Waits until ``text`` appears on the current page.</doc>
 <arguments>
-<arg>${BOTAO_CADASTRAR}</arg>
+<arg>ACEITAR</arg>
+<arg>15</arg>
 </arguments>
-<msg timestamp="20200711 16:11:59.994" level="INFO">Clicking element 'class:btn-cadastrar'.</msg>
-<status status="PASS" starttime="20200711 16:11:59.993" endtime="20200711 16:12:00.035"></status>
+<status status="PASS" starttime="20200722 21:45:57.969" endtime="20200722 21:45:57.978"></status>
 </kw>
-<status status="PASS" starttime="20200711 16:11:59.329" endtime="20200711 16:12:00.035"></status>
-</kw>
-<kw name="Então devo ver este prato no meu dashboard" library="kws">
-<kw name="Wait Until Element Is Visible" library="SeleniumLibrary">
-<doc>Waits until the element ``locator`` is visible.</doc>
+<kw name="Wait Until Page Contains" library="SeleniumLibrary">
+<doc>Waits until ``text`` appears on the current page.</doc>
 <arguments>
-<arg>${DASHBOARD}</arg>
-<arg>10</arg>
+<arg>REJEITAR</arg>
+<arg>15</arg>
 </arguments>
-<status status="PASS" starttime="20200711 16:12:00.037" endtime="20200711 16:12:05.049"></status>
+<status status="PASS" starttime="20200722 21:45:57.978" endtime="20200722 21:45:57.985"></status>
 </kw>
-<kw name="Wait Until Element Contains" library="SeleniumLibrary">
-<doc>Waits until the element ``locator`` contains ``text``.</doc>
-<arguments>
-<arg>${DASHBOARD}</arg>
-<arg>${produto['nome']}</arg>
-</arguments>
-<status status="PASS" starttime="20200711 16:12:05.049" endtime="20200711 16:12:05.282"></status>
-</kw>
-<status status="PASS" starttime="20200711 16:12:00.036" endtime="20200711 16:12:05.282"></status>
+<status status="PASS" starttime="20200722 21:45:57.969" endtime="20200722 21:45:57.985"></status>
 </kw>
 <kw name="Close Session" library="base" type="teardown">
+<kw name="Capture Page Screenshot" library="SeleniumLibrary">
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<msg timestamp="20200722 21:45:58.287" level="INFO" html="yes">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-21.png"&gt;&lt;img src="selenium-screenshot-21.png" width="800px"&gt;&lt;/a&gt;</msg>
+<status status="PASS" starttime="20200722 21:45:57.986" endtime="20200722 21:45:58.287"></status>
+</kw>
 <kw name="Close Browser" library="SeleniumLibrary">
 <doc>Closes the current browser.</doc>
-<status status="PASS" starttime="20200711 16:12:05.283" endtime="20200711 16:12:07.694"></status>
+<status status="PASS" starttime="20200722 21:45:58.287" endtime="20200722 21:46:00.388"></status>
 </kw>
-<status status="PASS" starttime="20200711 16:12:05.283" endtime="20200711 16:12:07.694"></status>
+<status status="PASS" starttime="20200722 21:45:57.985" endtime="20200722 21:46:00.388"></status>
 </kw>
-<status status="PASS" starttime="20200711 16:11:54.441" endtime="20200711 16:12:07.696" critical="yes"></status>
+<status status="PASS" starttime="20200722 21:45:48.163" endtime="20200722 21:46:00.389" critical="yes"></status>
 </test>
-<test id="s1-t2" name="Deletar produto cadastrado">
-<kw name="Login Session" library="helpers" type="setup">
-<arguments>
-<arg>vanessaredes@yahoo.com.br</arg>
-</arguments>
-<kw name="Open Session" library="base">
-<kw name="Open Browser" library="SeleniumLibrary">
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<arguments>
-<arg>about:blank</arg>
-<arg>chrome</arg>
-</arguments>
-<msg timestamp="20200711 16:12:07.699" level="INFO">Opening browser 'chrome' to base url 'about:blank'.</msg>
-<status status="PASS" starttime="20200711 16:12:07.699" endtime="20200711 16:12:10.749"></status>
-</kw>
-<status status="PASS" starttime="20200711 16:12:07.699" endtime="20200711 16:12:10.750"></status>
-</kw>
-<kw name="Go To" library="SeleniumLibrary">
-<doc>Navigates the current browser window to the provided ``url``.</doc>
-<arguments>
-<arg>${base_url}</arg>
-</arguments>
-<msg timestamp="20200711 16:12:10.768" level="INFO">Opening url 'http://ninjachef-qaninja-io.umbler.net/'</msg>
-<status status="PASS" starttime="20200711 16:12:10.768" endtime="20200711 16:12:11.871"></status>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<arguments>
-<arg>${CAMPO_EMAIL}</arg>
-<arg>${email}</arg>
-</arguments>
-<msg timestamp="20200711 16:12:11.872" level="INFO">Typing text 'vanessaredes@yahoo.com.br' into text field 'id:email'.</msg>
-<status status="PASS" starttime="20200711 16:12:11.872" endtime="20200711 16:12:12.016"></status>
-</kw>
-<kw name="Click Element" library="SeleniumLibrary">
-<doc>Click the element identified by ``locator``.</doc>
-<arguments>
-<arg>${BOTAO_ENTRAR}</arg>
-</arguments>
-<msg timestamp="20200711 16:12:12.016" level="INFO">Clicking element 'css:button[type=submit]'.</msg>
-<status status="PASS" starttime="20200711 16:12:12.016" endtime="20200711 16:12:12.053"></status>
-</kw>
-<kw name="Wait Until Page Contains Element" library="SeleniumLibrary">
-<doc>Waits until the element ``locator`` appears on the current page.</doc>
-<arguments>
-<arg>${DASHBOARD}</arg>
-</arguments>
-<status status="PASS" starttime="20200711 16:12:12.054" endtime="20200711 16:12:12.479"></status>
-</kw>
-<status status="PASS" starttime="20200711 16:12:07.699" endtime="20200711 16:12:12.479"></status>
-</kw>
-<kw name="Dado que eu cadastrei &quot;&amp;{nhoque_errado}&quot; um produto errado" library="kws">
-<kw name="Set Test Variable" library="BuiltIn">
-<doc>Makes a variable available everywhere within the scope of the current test.</doc>
-<arguments>
-<arg>${produto}</arg>
-</arguments>
-<msg timestamp="20200711 16:12:12.480" level="INFO">${produto} = {'nome': 'Nnhoque Ruim', 'tipo': 'Prato', 'preco': '20.00', 'img': 'nhoque.jpg'}</msg>
-<status status="PASS" starttime="20200711 16:12:12.480" endtime="20200711 16:12:12.480"></status>
-</kw>
-<kw name="Quando faço o cadastro desse item" library="kws">
-<kw name="Wait Until Element Is Visible" library="SeleniumLibrary">
-<doc>Waits until the element ``locator`` is visible.</doc>
-<arguments>
-<arg>${BOTAO_ADD}</arg>
-<arg>5</arg>
-</arguments>
-<status status="PASS" starttime="20200711 16:12:12.481" endtime="20200711 16:12:12.712"></status>
-</kw>
-<kw name="Click Element" library="SeleniumLibrary">
-<doc>Click the element identified by ``locator``.</doc>
-<arguments>
-<arg>${BOTAO_ADD}</arg>
-</arguments>
-<msg timestamp="20200711 16:12:12.712" level="INFO">Clicking element 'class:btn-add'.</msg>
-<status status="PASS" starttime="20200711 16:12:12.712" endtime="20200711 16:12:12.776"></status>
-</kw>
-<kw name="Choose File" library="SeleniumLibrary">
-<doc>Inputs the ``file_path`` into the file input field ``locator``.</doc>
-<arguments>
-<arg>${CAMPO_FOTO}</arg>
-<arg>${EXECDIR}/resources/images/${produto['img']}</arg>
-</arguments>
-<msg timestamp="20200711 16:12:12.777" level="INFO">Sending C:\roboweek\ninjachef\resources\images\nhoque.jpg to browser.</msg>
-<status status="PASS" starttime="20200711 16:12:12.777" endtime="20200711 16:12:12.818"></status>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<arguments>
-<arg>${CAMPO_NOME}</arg>
-<arg>${produto['nome']}</arg>
-</arguments>
-<msg timestamp="20200711 16:12:12.819" level="INFO">Typing text 'Nnhoque Ruim' into text field 'id:name'.</msg>
-<status status="PASS" starttime="20200711 16:12:12.818" endtime="20200711 16:12:12.948"></status>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<arguments>
-<arg>${CAMPO_TIPO}</arg>
-<arg>${produto['tipo']}</arg>
-</arguments>
-<msg timestamp="20200711 16:12:12.948" level="INFO">Typing text 'Prato' into text field 'id:plate'.</msg>
-<status status="PASS" starttime="20200711 16:12:12.948" endtime="20200711 16:12:13.018"></status>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<arguments>
-<arg>${CAMPO_PRICE}</arg>
-<arg>${produto['preco']}</arg>
-</arguments>
-<msg timestamp="20200711 16:12:13.019" level="INFO">Typing text '20.00' into text field 'id:price'.</msg>
-<status status="PASS" starttime="20200711 16:12:13.019" endtime="20200711 16:12:13.088"></status>
-</kw>
-<kw name="Click Element" library="SeleniumLibrary">
-<doc>Click the element identified by ``locator``.</doc>
-<arguments>
-<arg>${BOTAO_CADASTRAR}</arg>
-</arguments>
-<msg timestamp="20200711 16:12:13.089" level="INFO">Clicking element 'class:btn-cadastrar'.</msg>
-<status status="PASS" starttime="20200711 16:12:13.089" endtime="20200711 16:12:13.151"></status>
-</kw>
-<status status="PASS" starttime="20200711 16:12:12.480" endtime="20200711 16:12:13.151"></status>
-</kw>
-<status status="PASS" starttime="20200711 16:12:12.480" endtime="20200711 16:12:13.151"></status>
-</kw>
-<kw name="Quando vejo na lista" library="kws">
-<kw name="Então devo ver este prato no meu dashboard" library="kws">
-<kw name="Wait Until Element Is Visible" library="SeleniumLibrary">
-<doc>Waits until the element ``locator`` is visible.</doc>
-<arguments>
-<arg>${DASHBOARD}</arg>
-<arg>10</arg>
-</arguments>
-<status status="PASS" starttime="20200711 16:12:13.154" endtime="20200711 16:12:18.617"></status>
-</kw>
-<kw name="Wait Until Element Contains" library="SeleniumLibrary">
-<doc>Waits until the element ``locator`` contains ``text``.</doc>
-<arguments>
-<arg>${DASHBOARD}</arg>
-<arg>${produto['nome']}</arg>
-</arguments>
-<status status="PASS" starttime="20200711 16:12:18.617" endtime="20200711 16:12:18.863"></status>
-</kw>
-<status status="PASS" starttime="20200711 16:12:13.153" endtime="20200711 16:12:18.863"></status>
-</kw>
-<status status="PASS" starttime="20200711 16:12:13.152" endtime="20200711 16:12:18.863"></status>
-</kw>
-<kw name="Então devo apagar esse produto do meu dashboard" library="kws">
-<kw name="Click Element" library="SeleniumLibrary">
-<doc>Click the element identified by ``locator``.</doc>
-<arguments>
-<arg>class:delete-icon</arg>
-</arguments>
-<msg timestamp="20200711 16:12:18.864" level="INFO">Clicking element 'class:delete-icon'.</msg>
-<status status="PASS" starttime="20200711 16:12:18.864" endtime="20200711 16:12:18.906"></status>
-</kw>
-<status status="PASS" starttime="20200711 16:12:18.864" endtime="20200711 16:12:18.907"></status>
-</kw>
-<kw name="Close Session" library="base" type="teardown">
-<kw name="Close Browser" library="SeleniumLibrary">
-<doc>Closes the current browser.</doc>
-<status status="PASS" starttime="20200711 16:12:18.907" endtime="20200711 16:12:21.010"></status>
-</kw>
-<status status="PASS" starttime="20200711 16:12:18.907" endtime="20200711 16:12:21.010"></status>
-</kw>
-<status status="PASS" starttime="20200711 16:12:07.699" endtime="20200711 16:12:21.010" critical="yes"></status>
-</test>
-<doc>Cadastro de produtos/pratos
-Sendo um cozinheiro amador
-Quero cadastrar meus melhores pratos
-Para que eu possa cozinha-los para outras pessoas</doc>
-<status status="PASS" starttime="20200711 16:11:54.286" endtime="20200711 16:12:21.011"></status>
+<doc>Receber Pedidiso
+Sendo um cozinheiro que possui produtos no dashboard
+Quero receber solicitações de preparo dos meus produtos
+Para que eu possa envia-los aos meus clientes</doc>
+<status status="PASS" starttime="20200722 21:45:47.963" endtime="20200722 21:46:00.393"></status>
 </suite>
 <statistics>
 <total>
-<stat pass="2" fail="0">Critical Tests</stat>
-<stat pass="2" fail="0">All Tests</stat>
+<stat pass="1" fail="0">Critical Tests</stat>
+<stat pass="1" fail="0">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat pass="2" fail="0" id="s1" name="Produtos">Produtos</stat>
+<stat pass="1" fail="0" id="s1" name="Receber-Pedidos">Receber-Pedidos</stat>
 </suite>
 </statistics>
 <errors>

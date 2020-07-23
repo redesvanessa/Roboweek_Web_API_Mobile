@@ -17,6 +17,7 @@ Open Session
     ...                                  adbExecTimeout=120000 
 
 Close Session
+    Capture Page Screenshot
     Close Application
 
 *** Keywords ***
